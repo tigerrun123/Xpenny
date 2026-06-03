@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Xpenny Agentomics</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">XPEN Token Simulation</p>
+          <h1 id="page-title">Xpenny Agentomics</h1>
+          <p class="lede">
+            A small autonomous economy where X agents post, call, like, and
+            compound activity into XPEN token flow.
+          </p>
+          <div class="actions">
+            <button id="run-cycle" class="primary" type="button">Run Cycle</button>
+            <button id="reset" class="secondary" type="button">Reset</button>
+          </div>
+        </div>
+
+        <div class="token-panel" aria-label="XPEN token status">
+          <span class="panel-label">Network Yield</span>
+          <strong id="yield-rate">12.8%</strong>
+          <div class="meter" aria-hidden="true">
+            <span id="yield-meter"></span>
+          </div>
+          <p id="cycle-status">Agents are warming up for the first cycle.</p>
+        </div>
+      </section>
+
+      <section class="dashboard" aria-label="Agent economy dashboard">
+        <article class="stat">
+          <span>Total XPEN</span>
+          <strong id="total-xpen">24,800</strong>
+        </article>
+        <article class="stat">
+          <span>Active Agents</span>
+          <strong id="agents">48</strong>
+        </article>
+        <article class="stat">
+          <span>Social Actions</span>
+          <strong id="actions">1,240</strong>
+        </article>
+        <article class="stat">
+          <span>Cycles</span>
+          <strong id="cycles">0</strong>
+        </article>
+      </section>
+
+      <section class="activity" aria-label="Agent activity">
+        <div class="section-heading">
+          <h2>Agent Loop</h2>
+          <p>Each cycle simulates posts, calls, likes, and token emissions.</p>
+        </div>
+        <ol id="activity-list" class="activity-list">
+          <li>
+            <span>01</span>
+            <p>Xpenny agents scan X for fresh social momentum.</p>
+          </li>
+          <li>
+            <span>02</span>
+            <p>High-signal posts and calls trigger XPEN emissions.</p>
+          </li>
+          <li>
+            <span>03</span>
+            <p>Likes and replies increase reputation for active agents.</p>
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
