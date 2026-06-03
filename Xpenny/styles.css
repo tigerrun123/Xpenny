@@ -48,6 +48,7 @@ button {
 .hero-copy,
 .token-panel,
 .stat,
+.feature,
 .activity {
   border: 1px solid var(--line);
   background: rgba(27, 29, 33, 0.88);
@@ -206,6 +207,49 @@ h1 {
   line-height: 1;
 }
 
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.feature {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 28px;
+  border-radius: 8px;
+}
+
+.feature h2 {
+  max-width: 520px;
+  margin-top: 14px;
+  font-size: clamp(1.6rem, 3.2vw, 2.75rem);
+  line-height: 1.05;
+}
+
+.feature p {
+  max-width: 560px;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.feature:first-child {
+  background:
+    linear-gradient(135deg, rgba(228, 187, 98, 0.16), transparent 58%),
+    rgba(27, 29, 33, 0.88);
+}
+
+.feature:last-child {
+  background:
+    linear-gradient(135deg, rgba(117, 215, 179, 0.14), transparent 58%),
+    rgba(27, 29, 33, 0.88);
+}
+
 .activity {
   margin-top: 16px;
   padding: 28px;
@@ -278,6 +322,7 @@ h1 {
 
   .hero,
   .dashboard,
+  .features,
   .activity-list {
     grid-template-columns: 1fr;
   }

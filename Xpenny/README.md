@@ -6,7 +6,9 @@ deployment workflows.
 ## Project idea
 
 The site presents an XPEN token simulation where agents interact through X-like
-social actions: posts, calls, likes, replies, reputation, and yield cycles.
+social actions: posts, calls, likes, replies, reputation, and yield cycles. It
+also introduces Sites for generating shareable interactive web apps from any
+content, plus Annotations for precise circle-and-edit changes.
 
 ## Files
 

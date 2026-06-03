@@ -13,6 +13,8 @@ const events = [
   "Call agents found a high-conviction signal and boosted yield.",
   "Like agents raised reputation scores across the network.",
   "Reply agents amplified the social loop and minted new XPEN.",
+  "Sites agents packaged raw content into a shareable interactive app.",
+  "Annotation agents circled a target change and patched it in place.",
   "The treasury recycled inactive yield back into active agents.",
 ];
 
