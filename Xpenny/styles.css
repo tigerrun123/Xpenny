@@ -55,12 +55,37 @@ button {
 }
 
 .hero-copy {
+  position: relative;
   min-height: 420px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  overflow: hidden;
   padding: clamp(28px, 5vw, 56px);
   border-radius: 8px;
+}
+
+.hero-video,
+.hero-shade {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-shade {
+  background:
+    linear-gradient(90deg, rgba(16, 17, 20, 0.9), rgba(16, 17, 20, 0.5)),
+    linear-gradient(0deg, rgba(16, 17, 20, 0.82), transparent 54%);
+}
+
+.hero-copy > :not(.hero-video):not(.hero-shade) {
+  position: relative;
+  z-index: 1;
 }
 
 .eyebrow,
