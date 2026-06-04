@@ -45,6 +45,8 @@ Then open your Telegram bot and send a message.
 - `/hyper_top` - Show demo Hyperliquid top traders
 - `/hyper_top 7d roi` - Show demo top 10 traders by ROI
 - `/hyper_top 30d pnl` - Show demo top 10 traders by PnL
+- `/hyper_loss` - Show top 10 loss traders by 7D PnL
+- `/hyper_loss 30d pnl` - Show top 10 loss traders by 30D PnL
 
 The Hyperliquid command currently uses demo data. To make it live, connect a
 leaderboard API such as Nansen, HyData, HyperTracker, or another data provider
@@ -69,9 +71,9 @@ Then restart:
 npm start
 ```
 
-The `/hyper_top` command uses the HyperTracker `perp-pnl` leaderboard endpoint.
-If the token is missing or the API request fails, the bot falls back to demo
-data.
+The `/hyper_top` and `/hyper_loss` commands use the HyperTracker `perp-pnl`
+leaderboard endpoint. If the token is missing or the API request fails, the bot
+falls back to demo data.
 
 ## Notes
 

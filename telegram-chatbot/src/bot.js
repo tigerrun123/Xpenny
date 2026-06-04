@@ -41,6 +41,19 @@ const demoHyperliquidTraders = [
   { wallet: "0x0a79...6d45", market: "LINK", roi: 61.8, pnl: 8720, volume: 198000 },
 ];
 
+const demoHyperliquidLossTraders = [
+  { wallet: "0x93cb...4a80", market: "BTC", roi: -48.4, pnl: -68420, volume: 1510000 },
+  { wallet: "0xaa11...8f2d", market: "ETH", roi: -43.1, pnl: -52980, volume: 1180000 },
+  { wallet: "0x71f9...b0c3", market: "HYPE", roi: -39.6, pnl: -44750, volume: 870000 },
+  { wallet: "0x6802...e1aa", market: "SOL", roi: -34.2, pnl: -38210, volume: 730000 },
+  { wallet: "0xf8d4...71d0", market: "DOGE", roi: -31.8, pnl: -29450, volume: 502000 },
+  { wallet: "0x2f5b...19e7", market: "FARTCOIN", roi: -28.7, pnl: -25160, volume: 420000 },
+  { wallet: "0xc044...dd92", market: "LINK", roi: -24.9, pnl: -21480, volume: 390000 },
+  { wallet: "0x9d7e...3b11", market: "PURR", roi: -22.5, pnl: -18420, volume: 310000 },
+  { wallet: "0x318c...a5fb", market: "ETH", roi: -19.3, pnl: -15330, volume: 285000 },
+  { wallet: "0x40ab...906c", market: "BTC", roi: -17.4, pnl: -12980, volume: 260000 },
+];
+
 function formatUsd(value) {
   if (!Number.isFinite(value)) {
     return "n/a";
@@ -53,7 +66,7 @@ function formatUsd(value) {
   }).format(value);
 }
 
-function normalizeHyperTopArgs(timeframe = "7d", sort = "roi") {
+function normalizeHyperArgs(timeframe = "7d", sort = "roi") {
   const periodMap = {
     "1d": "Day",
     "24h": "Day",
@@ -119,15 +132,16 @@ function formatTraderRows(traders, period) {
     .join("\n");
 }
 
-async function fetchHyperTrackerTopTraders(timeframe = "7d", sort = "roi") {
+async function fetchHyperTrackerLeaderboard(timeframe = "7d", sort = "roi", direction = "top") {
   if (!HYPERTRACKER_API_TOKEN) {
     return null;
   }
 
-  const { orderBy, period, sort: normalizedSort } = normalizeHyperTopArgs(timeframe, sort);
+  const { orderBy, period, sort: normalizedSort } = normalizeHyperArgs(timeframe, sort);
   const url = new URL("https://ht-api.coinmarketman.com/api/external/leaderboards/perp-pnl");
+  const order = direction === "loss" ? "asc" : "desc";
 
-  url.searchParams.set("order", "desc");
+  url.searchParams.set("order", order);
   url.searchParams.set("orderBy", orderBy);
   url.searchParams.set("rankBy", orderBy);
   url.searchParams.set("limit", "25");
@@ -152,14 +166,18 @@ async function fetchHyperTrackerTopTraders(timeframe = "7d", sort = "roi") {
         : `pnl${period}`;
   const traders = getLeaderboardRows(payload)
     .filter((trader) => Number.isFinite(Number(trader[field])))
-    .sort((a, b) => Number(b[field]) - Number(a[field]));
+    .sort((a, b) =>
+      direction === "loss" ? Number(a[field]) - Number(b[field]) : Number(b[field]) - Number(a[field]),
+    );
 
   if (!traders.length) {
     throw new Error("HyperTracker API returned no leaderboard rows");
   }
 
+  const title = direction === "loss" ? "Top Loss Traders" : "Top Traders";
+
   return [
-    `Hyperliquid Top Traders Live (${timeframe.toUpperCase()} by ${normalizedSort.toUpperCase()})`,
+    `Hyperliquid ${title} Live (${timeframe.toUpperCase()} by ${normalizedSort.toUpperCase()})`,
     "",
     formatTraderRows(traders, period),
     "",
@@ -187,6 +205,29 @@ function formatHyperliquidTopTraders(timeframe = "7d", sort = "roi") {
     rows,
     "",
     "Demo data only. Connect a leaderboard API key later for live Hyperliquid data.",
+  ].join("\n");
+}
+
+function formatHyperliquidLossTraders(timeframe = "7d", sort = "pnl") {
+  const label = sort.toUpperCase();
+  const rows = demoHyperliquidLossTraders
+    .map((trader, index) => {
+      return [
+        `${index + 1}. ${trader.wallet}`,
+        `Market: ${trader.market}`,
+        `ROI: ${trader.roi.toFixed(1)}%`,
+        `PnL: ${formatUsd(trader.pnl)}`,
+        `Vol: ${formatUsd(trader.volume)}`,
+      ].join(" | ");
+    })
+    .join("\n");
+
+  return [
+    `Hyperliquid Top Loss Traders Demo (${timeframe.toUpperCase()} by ${label})`,
+    "",
+    rows,
+    "",
+    "Demo data only. Add HYPERTRACKER_API_TOKEN for live loss leaderboard data.",
   ].join("\n");
 }
 
@@ -221,6 +262,8 @@ bot.command("help", async (ctx) => {
       "/hyper_top - Show demo Hyperliquid top traders",
       "/hyper_top 7d roi - Demo top 10 by ROI",
       "/hyper_top 30d pnl - Demo top 10 by PnL",
+      "/hyper_loss - Show top 10 loss traders by 7D PnL",
+      "/hyper_loss 30d pnl - Show top 10 loss traders by 30D PnL",
     ].join("\n"),
   );
 });
@@ -238,7 +281,7 @@ bot.command("hyper_top", async (ctx) => {
   await ctx.sendChatAction("typing");
 
   try {
-    const liveText = await fetchHyperTrackerTopTraders(timeframe, sort);
+    const liveText = await fetchHyperTrackerLeaderboard(timeframe, sort, "top");
     await ctx.reply(liveText || formatHyperliquidTopTraders(timeframe, sort));
   } catch (error) {
     console.error("HyperTracker API error:", error);
@@ -247,6 +290,28 @@ bot.command("hyper_top", async (ctx) => {
         formatHyperliquidTopTraders(timeframe, sort),
         "",
         "Live HyperTracker request failed, so I used demo data.",
+      ].join("\n"),
+    );
+  }
+});
+
+bot.command("hyper_loss", async (ctx) => {
+  const parts = ctx.message.text.trim().split(/\s+/);
+  const timeframe = parts[1] || "7d";
+  const sort = parts[2] || "pnl";
+
+  await ctx.sendChatAction("typing");
+
+  try {
+    const liveText = await fetchHyperTrackerLeaderboard(timeframe, sort, "loss");
+    await ctx.reply(liveText || formatHyperliquidLossTraders(timeframe, sort));
+  } catch (error) {
+    console.error("HyperTracker loss API error:", error);
+    await ctx.reply(
+      [
+        formatHyperliquidLossTraders(timeframe, sort),
+        "",
+        "Live HyperTracker loss request failed, so I used demo data.",
       ].join("\n"),
     );
   }
