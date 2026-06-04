@@ -41,6 +41,13 @@ Then open your Telegram bot and send a message.
 - `/start` - Start the bot
 - `/help` - Show help
 - `/reset` - Clear this chat's conversation memory
+- `/hyper_top` - Show demo Hyperliquid top traders
+- `/hyper_top 7d roi` - Show demo top 10 traders by ROI
+- `/hyper_top 30d pnl` - Show demo top 10 traders by PnL
+
+The Hyperliquid command currently uses demo data. To make it live, connect a
+leaderboard API such as Nansen, HyData, HyperTracker, or another data provider
+that exposes Hyperliquid trader PnL/ROI rankings.
 
 ## Notes
 
