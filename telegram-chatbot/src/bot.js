@@ -147,8 +147,31 @@ bot.catch((error) => {
   console.error("Telegram bot error:", error);
 });
 
-await bot.launch();
-console.log("Xpenny Telegram ChatGPT bot is running.");
+async function launchWithRetry(maxAttempts = 5) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      await bot.launch();
+      console.log("Xpenny Telegram ChatGPT bot is running.");
+      return;
+    } catch (error) {
+      const message = error?.message || String(error);
+      console.error(`Telegram launch failed (${attempt}/${maxAttempts}): ${message}`);
+
+      if (attempt === maxAttempts) {
+        console.error(
+          "Could not connect to Telegram. Check your internet connection, VPN/proxy, and bot token.",
+        );
+        throw error;
+      }
+
+      await new Promise((resolve) => {
+        setTimeout(resolve, 5000);
+      });
+    }
+  }
+}
+
+await launchWithRetry();
 
 const shutdown = (signal) => {
   bot.stop(signal);
