@@ -25,6 +25,7 @@ Edit `.env`:
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token
 OPENAI_API_KEY=your_openai_api_key
 OPENAI_MODEL=gpt-5.2
+HYPERTRACKER_API_TOKEN=optional_hypertracker_api_token
 ```
 
 ## 3. Install and run
@@ -48,6 +49,29 @@ Then open your Telegram bot and send a message.
 The Hyperliquid command currently uses demo data. To make it live, connect a
 leaderboard API such as Nansen, HyData, HyperTracker, or another data provider
 that exposes Hyperliquid trader PnL/ROI rankings.
+
+## Hyperliquid live data
+
+The bot supports HyperTracker live leaderboard data when
+`HYPERTRACKER_API_TOKEN` is set in `.env`.
+
+HyperTracker's public docs list a Free Tier with 100 requests per day. Create a
+CoinMarketMan/HyperTracker account, open the API Dashboard, generate a key, and
+paste it into `.env`:
+
+```text
+HYPERTRACKER_API_TOKEN=your_hypertracker_api_token
+```
+
+Then restart:
+
+```sh
+npm start
+```
+
+The `/hyper_top` command uses the HyperTracker `perp-pnl` leaderboard endpoint.
+If the token is missing or the API request fails, the bot falls back to demo
+data.
 
 ## Notes
 

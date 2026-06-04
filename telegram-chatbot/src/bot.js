@@ -2,7 +2,12 @@ import "dotenv/config";
 import OpenAI from "openai";
 import { Telegraf } from "telegraf";
 
-const { TELEGRAM_BOT_TOKEN, OPENAI_API_KEY, OPENAI_MODEL = "gpt-5.2" } = process.env;
+const {
+  TELEGRAM_BOT_TOKEN,
+  OPENAI_API_KEY,
+  OPENAI_MODEL = "gpt-5.2",
+  HYPERTRACKER_API_TOKEN,
+} = process.env;
 
 if (!TELEGRAM_BOT_TOKEN) {
   throw new Error("Missing TELEGRAM_BOT_TOKEN in environment.");
@@ -37,11 +42,129 @@ const demoHyperliquidTraders = [
 ];
 
 function formatUsd(value) {
+  if (!Number.isFinite(value)) {
+    return "n/a";
+  }
+
   return new Intl.NumberFormat("en-US", {
     currency: "USD",
     maximumFractionDigits: 0,
     style: "currency",
   }).format(value);
+}
+
+function normalizeHyperTopArgs(timeframe = "7d", sort = "roi") {
+  const periodMap = {
+    "1d": "Day",
+    "24h": "Day",
+    "7d": "Week",
+    "30d": "Month",
+    all: "AllTime",
+    alltime: "AllTime",
+  };
+  const period = periodMap[timeframe.toLowerCase()] || "Week";
+  const normalizedSort = ["pnl", "roi", "volume"].includes(sort.toLowerCase())
+    ? sort.toLowerCase()
+    : "roi";
+
+  return {
+    orderBy: `pnl${period}`,
+    period,
+    sort: normalizedSort,
+    timeframe,
+  };
+}
+
+function getLeaderboardRows(payload) {
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (Array.isArray(payload?.data)) {
+    return payload.data;
+  }
+
+  if (Array.isArray(payload?.rows)) {
+    return payload.rows;
+  }
+
+  return [];
+}
+
+function compactAddress(address = "") {
+  if (address.length <= 14) {
+    return address || "unknown";
+  }
+
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+}
+
+function formatTraderRows(traders, period) {
+  return traders
+    .slice(0, 10)
+    .map((trader, index) => {
+      const pnl = Number(trader[`pnl${period}`]);
+      const roi = Number(trader[`pnlPercent${period}`]);
+      const volume = Number(trader[`volume${period}`]);
+      const equity = Number(trader.perpEquity);
+
+      return [
+        `${index + 1}. ${compactAddress(trader.address || trader.wallet)}`,
+        `ROI: ${Number.isFinite(roi) ? `${roi.toFixed(1)}%` : "n/a"}`,
+        `PnL: ${formatUsd(pnl)}`,
+        `Eq: ${formatUsd(equity)}`,
+        `Vol: ${formatUsd(volume)}`,
+      ].join(" | ");
+    })
+    .join("\n");
+}
+
+async function fetchHyperTrackerTopTraders(timeframe = "7d", sort = "roi") {
+  if (!HYPERTRACKER_API_TOKEN) {
+    return null;
+  }
+
+  const { orderBy, period, sort: normalizedSort } = normalizeHyperTopArgs(timeframe, sort);
+  const url = new URL("https://ht-api.coinmarketman.com/api/external/leaderboards/perp-pnl");
+
+  url.searchParams.set("order", "desc");
+  url.searchParams.set("orderBy", orderBy);
+  url.searchParams.set("rankBy", orderBy);
+  url.searchParams.set("limit", "25");
+  url.searchParams.set("offset", "0");
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${HYPERTRACKER_API_TOKEN}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HyperTracker API returned ${response.status}`);
+  }
+
+  const payload = await response.json();
+  const field =
+    normalizedSort === "roi"
+      ? `pnlPercent${period}`
+      : normalizedSort === "volume"
+        ? `volume${period}`
+        : `pnl${period}`;
+  const traders = getLeaderboardRows(payload)
+    .filter((trader) => Number.isFinite(Number(trader[field])))
+    .sort((a, b) => Number(b[field]) - Number(a[field]));
+
+  if (!traders.length) {
+    throw new Error("HyperTracker API returned no leaderboard rows");
+  }
+
+  return [
+    `Hyperliquid Top Traders Live (${timeframe.toUpperCase()} by ${normalizedSort.toUpperCase()})`,
+    "",
+    formatTraderRows(traders, period),
+    "",
+    "Source: HyperTracker perp-pnl leaderboard. Not financial advice.",
+  ].join("\n");
 }
 
 function formatHyperliquidTopTraders(timeframe = "7d", sort = "roi") {
@@ -112,7 +235,21 @@ bot.command("hyper_top", async (ctx) => {
   const timeframe = parts[1] || "7d";
   const sort = parts[2] || "roi";
 
-  await ctx.reply(formatHyperliquidTopTraders(timeframe, sort));
+  await ctx.sendChatAction("typing");
+
+  try {
+    const liveText = await fetchHyperTrackerTopTraders(timeframe, sort);
+    await ctx.reply(liveText || formatHyperliquidTopTraders(timeframe, sort));
+  } catch (error) {
+    console.error("HyperTracker API error:", error);
+    await ctx.reply(
+      [
+        formatHyperliquidTopTraders(timeframe, sort),
+        "",
+        "Live HyperTracker request failed, so I used demo data.",
+      ].join("\n"),
+    );
+  }
 });
 
 bot.on("text", async (ctx) => {
