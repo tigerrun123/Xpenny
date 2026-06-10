@@ -101,3 +101,18 @@ elements.runCycle.addEventListener("click", runCycle);
 elements.reset.addEventListener("click", reset);
 
 render();
+
+async function signalFarcasterReady() {
+  try {
+    const { sdk } = await import("https://esm.sh/@farcaster/miniapp-sdk");
+    await sdk.actions.ready();
+  } catch (error) {
+    console.warn("Farcaster Mini App SDK ready signal skipped:", error);
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", signalFarcasterReady, { once: true });
+} else {
+  signalFarcasterReady();
+}
