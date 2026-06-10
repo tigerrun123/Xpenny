@@ -23,3 +23,4 @@ OpenClaw channels currently configured or investigated:
 - Telegram chatbot: `notes/openclaw-lightsail-telegram-config.md`
 - WhatsApp channel: `notes/whatsapp-channel-setup.md`
 - Google Meet plugin: `notes/google-meet-plugin-setup.md`
+- Farcaster Mini App on Netlify: `notes/farcaster-miniapp-setup.md`

@@ -1,0 +1,14 @@
+[build]
+  publish = "Xpenny"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/farcaster/webhook"
+  to = "/.netlify/functions/farcaster-webhook"
+  status = 200
+
+[[redirects]]
+  from = "/webhook/farcaster"
+  to = "/.netlify/functions/farcaster-webhook"
+  status = 200
+

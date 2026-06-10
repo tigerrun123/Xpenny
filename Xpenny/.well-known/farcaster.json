@@ -1,0 +1,19 @@
+{
+  "accountAssociation": {
+    "header": "GENERATE_WITH_FARCASTER_MANIFEST_TOOL",
+    "payload": "GENERATE_WITH_FARCASTER_MANIFEST_TOOL",
+    "signature": "GENERATE_WITH_FARCASTER_MANIFEST_TOOL"
+  },
+  "frame": {
+    "version": "1",
+    "name": "Xpenny",
+    "iconUrl": "https://xpenny.netlify.app/assets/xpenny-icon.svg",
+    "homeUrl": "https://xpenny.netlify.app",
+    "imageUrl": "https://xpenny.netlify.app/assets/xpenny-preview.svg",
+    "buttonTitle": "Open Xpenny",
+    "splashImageUrl": "https://xpenny.netlify.app/assets/xpenny-splash.svg",
+    "splashBackgroundColor": "#101114",
+    "webhookUrl": "https://xpenny.netlify.app/api/farcaster/webhook"
+  }
+}
+

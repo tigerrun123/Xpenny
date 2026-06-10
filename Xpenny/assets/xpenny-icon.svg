@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title">
+  <title id="title">Xpenny icon</title>
+  <rect width="1024" height="1024" rx="220" fill="#101114"/>
+  <circle cx="512" cy="512" r="330" fill="#e4bb62"/>
+  <path fill="#101114" d="M296 278h136l82 134 84-134h130L584 500l154 246H602l-94-152-96 152H282l158-244L296 278Z"/>
+  <circle cx="774" cy="250" r="58" fill="#75d7b3"/>
+</svg>
+

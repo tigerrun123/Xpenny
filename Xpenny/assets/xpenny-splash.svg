@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title">
+  <title id="title">Xpenny splash</title>
+  <rect width="400" height="400" rx="88" fill="#101114"/>
+  <circle cx="200" cy="200" r="132" fill="#e4bb62"/>
+  <path fill="#101114" d="M112 104h56l34 55 35-55h53l-59 91 64 101h-56l-39-62-39 62h-54l65-100-60-92Z"/>
+</svg>
+
