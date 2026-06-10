@@ -8,9 +8,9 @@ Site:
 
 ## Added Files
 
-- `netlify.toml` keeps the static site published from `Xpenny` and enables Netlify Functions from `netlify/functions`.
+- `Xpenny/netlify.toml` keeps the Netlify site published from the `Xpenny` base directory and enables Netlify Functions from `Xpenny/netlify/functions`.
 - `Xpenny/.well-known/farcaster.json` defines the Mini App manifest.
-- `netlify/functions/farcaster-webhook.js` receives Farcaster Mini App lifecycle events.
+- `Xpenny/netlify/functions/farcaster-webhook.js` receives Farcaster Mini App lifecycle events.
 - `Xpenny/assets/xpenny-icon.svg`, `xpenny-preview.svg`, and `xpenny-splash.svg` provide Mini App visual assets.
 
 ## URLs
@@ -42,4 +42,3 @@ GENERATE_WITH_FARCASTER_MANIFEST_TOOL
 ```
 
 Do not commit private keys, seed phrases, custody wallet secrets, API keys, or user tokens.
-
