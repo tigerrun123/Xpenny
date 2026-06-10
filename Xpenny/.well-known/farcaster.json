@@ -7,11 +7,11 @@
   "frame": {
     "version": "1",
     "name": "Xpenny",
-    "iconUrl": "https://xpenny.netlify.app/assets/xpenny-icon.svg",
+    "iconUrl": "https://xpenny.netlify.app/assets/xpenny-icon.png",
     "homeUrl": "https://xpenny.netlify.app",
-    "imageUrl": "https://xpenny.netlify.app/assets/xpenny-preview.svg",
+    "imageUrl": "https://xpenny.netlify.app/assets/xpenny-preview.png",
     "buttonTitle": "Open Xpenny",
-    "splashImageUrl": "https://xpenny.netlify.app/assets/xpenny-splash.svg",
+    "splashImageUrl": "https://xpenny.netlify.app/assets/xpenny-splash.png",
     "splashBackgroundColor": "#101114",
     "webhookUrl": "https://xpenny.netlify.app/api/farcaster/webhook"
   }
