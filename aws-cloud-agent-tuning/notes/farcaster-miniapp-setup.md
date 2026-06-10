@@ -9,6 +9,7 @@ Site:
 ## Added Files
 
 - `Xpenny/netlify.toml` keeps the Netlify site published from the `Xpenny` base directory and enables Netlify Functions from `Xpenny/netlify/functions`.
+- `Xpenny/_redirects` maps friendly webhook paths to the Netlify Function.
 - `Xpenny/.well-known/farcaster.json` defines the Mini App manifest.
 - `Xpenny/netlify/functions/farcaster-webhook.js` receives Farcaster Mini App lifecycle events.
 - `Xpenny/assets/xpenny-icon.svg`, `xpenny-preview.svg`, and `xpenny-splash.svg` provide Mini App visual assets.

@@ -1,0 +1,3 @@
+/api/farcaster/webhook /.netlify/functions/farcaster-webhook 200
+/webhook/farcaster /.netlify/functions/farcaster-webhook 200
+
