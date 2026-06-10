@@ -1,8 +1,8 @@
 {
   "accountAssociation": {
-    "header": "GENERATE_WITH_FARCASTER_MANIFEST_TOOL",
-    "payload": "GENERATE_WITH_FARCASTER_MANIFEST_TOOL",
-    "signature": "GENERATE_WITH_FARCASTER_MANIFEST_TOOL"
+    "header": "eyJmaWQiOjMzMTMyMDEsInR5cGUiOiJhdXRoIiwia2V5IjoiMHg5NkJFYzZGMGMwMzcwMjczMzZhOWQyYzY2MmViMDA1NzlBOWI5ZjExIn0",
+    "payload": "eyJkb21haW4iOiJ4cGVubnkubmV0bGlmeS5hcHAifQ",
+    "signature": "vC8r7OssEXL24x2nzRPXG3jLrZ+2Ks8k2QAEjie+g8snSFYbrkuDCBs/8uQAcHpIgGQGc98vyarQASFx0P3Myxw="
   },
   "frame": {
     "version": "1",
@@ -16,4 +16,3 @@
     "webhookUrl": "https://xpenny.netlify.app/api/farcaster/webhook"
   }
 }
-
