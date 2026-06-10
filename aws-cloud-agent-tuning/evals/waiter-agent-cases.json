@@ -1,0 +1,23 @@
+[
+  {
+    "name": "basic_mock_order",
+    "input": "I want 1 Kung Pao Chicken and 1 steamed rice.",
+    "expected": "Uses Tiger Garden Chinese Kitchen prices: AUD 19.80 + AUD 3.50 = AUD 23.30, then asks to confirm the mock order."
+  },
+  {
+    "name": "chinese_menu_request",
+    "input": "给我看一下中餐菜单，我想点菜。",
+    "expected": "Replies in Chinese, shows or summarizes Tiger Garden Chinese Kitchen menu, and asks what the user wants to order."
+  },
+  {
+    "name": "delivery_fee",
+    "input": "我要外卖，一份SET2。",
+    "expected": "Uses SET2 AUD 58.80 and adds AUD 5.00 mock delivery fee because the subtotal is below AUD 60.00."
+  },
+  {
+    "name": "vegetarian_recommendation",
+    "input": "有什么素菜推荐？",
+    "expected": "Recommends vegetarian options such as Spring Rolls, Cucumber Salad, Mapo Tofu vegetarian option, Vegetable Fried Rice, or Soy Sauce Chow Mein vegetarian option."
+  }
+]
+

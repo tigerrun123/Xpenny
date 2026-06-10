@@ -139,3 +139,30 @@ Verification:
 Next verification:
 
 - Send a fresh Telegram DM to `@xtoken2000_bot` after this allowlist update.
+
+## 2026-06-10 Waiter/Waitress Agent Experiment
+
+Goal:
+
+- Turn the OpenClaw Telegram agent into a mock restaurant waiter/waitress for Chinese food ordering tests.
+
+Server changes:
+
+- Added a workspace skill directory:
+  `/home/ubuntu/.openclaw/workspace/.openclaw/skills/chinese-restaurant-waiter/`
+- Added `SKILL.md` and `menu.json` with mock Tiger Garden Chinese Kitchen menu data.
+- Added `Restaurant Waiter Mode` to `/home/ubuntu/.openclaw/workspace/IDENTITY.md` so the main agent reliably uses the fixed restaurant menu and AUD prices.
+
+Verification:
+
+- Ran a local OpenClaw agent test:
+  `Restaurant waiter test. Use Tiger Garden Chinese Kitchen exact menu. Order: 1 Kung Pao Chicken and 1 Steamed Rice. Show receipt total in AUD.`
+- Verified output used:
+  - `M01 Kung Pao Chicken x 1 - AUD 19.80`
+  - `R01 Steamed Rice x 1 - AUD 3.50`
+  - Total: `AUD 23.30`
+- Verified the agent asks for pickup, dine-in, or mock delivery before final confirmation.
+
+Operational note:
+
+- The web SSH terminal can corrupt Chinese text typed directly into CLI commands. Telegram should be used for Chinese-language end-to-end tests.
