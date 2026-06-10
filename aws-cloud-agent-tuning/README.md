@@ -18,6 +18,8 @@ Use Codex to inspect, tune, test, and improve the AWS-hosted agent/service.
 
 AWS Lightsail with OpenClaw already installed.
 
-Primary next step: configure OpenClaw's native Telegram channel on the Lightsail instance.
+OpenClaw channels currently configured or investigated:
 
-See `notes/openclaw-lightsail-telegram-config.md`.
+- Telegram chatbot: `notes/openclaw-lightsail-telegram-config.md`
+- WhatsApp channel: `notes/whatsapp-channel-setup.md`
+- Google Meet plugin: `notes/google-meet-plugin-setup.md`
