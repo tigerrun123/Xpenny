@@ -129,21 +129,16 @@ function extractReply(payload) {
   );
 }
 
-async function askOpenClaw(event) {
-  event.preventDefault();
-
-  const message = elements.openclawInput.value.trim();
-
+async function sendOpenClawMessage(message, options = {}) {
   if (!message) {
     return;
   }
 
   const button = elements.openclawForm.querySelector("button");
-  elements.openclawInput.value = "";
   elements.openclawInput.disabled = true;
   button.disabled = true;
   elements.openclawStatus.textContent = "Contacting AWS OpenClaw...";
-  appendAgentMessage("user", "You", message);
+  appendAgentMessage("user", options.userLabel || "You", message);
 
   try {
     const response = await fetch("/api/openclaw/chat", {
@@ -151,7 +146,7 @@ async function askOpenClaw(event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message,
-        source: "xpenny-farcaster-miniapp",
+        source: options.source || "xpenny-farcaster-miniapp",
       }),
     });
 
@@ -181,11 +176,53 @@ async function askOpenClaw(event) {
   }
 }
 
+async function askOpenClaw(event) {
+  event.preventDefault();
+
+  const message = elements.openclawInput.value.trim();
+
+  if (!message) {
+    return;
+  }
+
+  elements.openclawInput.value = "";
+  await sendOpenClawMessage(message);
+}
+
+function maybeRunCastQuery() {
+  const params = new URLSearchParams(window.location.search);
+  const query = (params.get("q") || "").trim();
+
+  if (!query) {
+    return;
+  }
+
+  const runKey = `xpenny-openclaw-query:${query}`;
+
+  try {
+    if (sessionStorage.getItem(runKey)) {
+      elements.openclawInput.value = query;
+      elements.openclawStatus.textContent = "Cast query loaded.";
+      return;
+    }
+
+    sessionStorage.setItem(runKey, "1");
+  } catch {
+    elements.openclawInput.value = query;
+  }
+
+  elements.openclawStatus.textContent = "Cast query opened in Mini App.";
+  sendOpenClawMessage(query, {
+    source: "xpenny-farcaster-mention-link",
+  });
+}
+
 elements.runCycle.addEventListener("click", runCycle);
 elements.reset.addEventListener("click", reset);
 elements.openclawForm.addEventListener("submit", askOpenClaw);
 
 render();
+maybeRunCastQuery();
 
 async function signalFarcasterReady() {
   try {

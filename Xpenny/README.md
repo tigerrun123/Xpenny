@@ -80,3 +80,32 @@ OPENCLAW_AGENT_TOKEN=<optional shared token>
 
 Keep OpenClaw tokens and AWS bridge secrets in Netlify environment variables,
 not in the frontend.
+
+The Mini App also accepts a cast query parameter:
+
+```text
+https://xpenny.netlify.app?q=tiger%20menu%20please
+```
+
+When `q` is present, the Mini App opens and sends that question to OpenClaw
+automatically.
+
+## Neynar Mention Webhook
+
+`POST /api/neynar/mention` is for the Farcaster mention flow:
+
+```text
+@xtoken123 tiger menu please
+```
+
+The Netlify Function extracts the prompt, asks OpenClaw, then replies to the
+cast with an `Open Xpenny` Mini App link containing `?q=...`.
+
+Netlify environment variables:
+
+```text
+NEYNAR_API_KEY=<Neynar API key>
+NEYNAR_SIGNER_UUID=<Neynar signer for @xtoken123>
+NEYNAR_BOT_USERNAME=xtoken123
+NEYNAR_WEBHOOK_SECRET=<optional Neynar webhook secret>
+```

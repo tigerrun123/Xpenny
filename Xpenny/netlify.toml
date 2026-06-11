@@ -12,3 +12,12 @@
   to = "/.netlify/functions/farcaster-webhook"
   status = 200
 
+[[redirects]]
+  from = "/api/openclaw/chat"
+  to = "/.netlify/functions/openclaw-chat"
+  status = 200
+
+[[redirects]]
+  from = "/api/neynar/mention"
+  to = "/.netlify/functions/neynar-mention"
+  status = 200

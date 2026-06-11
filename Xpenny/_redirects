@@ -1,3 +1,4 @@
 /api/farcaster/webhook /.netlify/functions/farcaster-webhook 200
 /webhook/farcaster /.netlify/functions/farcaster-webhook 200
 /api/openclaw/chat /.netlify/functions/openclaw-chat 200
+/api/neynar/mention /.netlify/functions/neynar-mention 200
