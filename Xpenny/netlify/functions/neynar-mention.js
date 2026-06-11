@@ -160,7 +160,7 @@ async function askOpenClaw(message, cast) {
 function compactReply(reply, url) {
   const intro = reply
     ? reply.replace(/\s+/g, " ").trim().slice(0, 180)
-    : "I sent this to the Xpenny OpenClaw agent.";
+    : "Open this in Xpenny and I will route it to the AWS OpenClaw agent.";
 
   return `${intro}\n\nOpen Xpenny:\n${url}`;
 }
@@ -237,11 +237,13 @@ exports.handler = async (event) => {
   const url = miniAppUrl(prompt);
   let openClawReply = "";
 
-  try {
-    openClawReply = await askOpenClaw(prompt, cast);
-  } catch (error) {
-    console.error("OpenClaw mention lookup failed:", error);
-    openClawReply = "OpenClaw is slow on this request, but the Mini App link is ready.";
+  if (process.env.NEYNAR_MENTION_SYNC_OPENCLAW === "true") {
+    try {
+      openClawReply = await askOpenClaw(prompt, cast);
+    } catch (error) {
+      console.error("OpenClaw mention lookup failed:", error);
+      openClawReply = "OpenClaw is slow on this request, but the Mini App link is ready.";
+    }
   }
 
   const replyText = compactReply(openClawReply, url);

@@ -98,8 +98,10 @@ automatically.
 @xtoken123 tiger menu please
 ```
 
-The Netlify Function extracts the prompt, asks OpenClaw, then replies to the
-cast with an `Open Xpenny` Mini App link containing `?q=...`.
+The Netlify Function extracts the prompt and replies quickly with an
+`Open Xpenny` Mini App link containing `?q=...`. The Mini App then asks
+OpenClaw after the user opens it. This keeps the webhook fast enough to avoid
+Neynar delivery retries when AWS/OpenClaw takes a long time to answer.
 
 Netlify environment variables:
 
@@ -108,4 +110,5 @@ NEYNAR_API_KEY=<Neynar API key>
 NEYNAR_SIGNER_UUID=<Neynar signer for @xtoken123>
 NEYNAR_BOT_USERNAME=xtoken123
 NEYNAR_WEBHOOK_SECRET=<optional Neynar webhook secret>
+NEYNAR_MENTION_SYNC_OPENCLAW=false
 ```
