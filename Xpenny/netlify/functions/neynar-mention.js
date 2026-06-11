@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const SITE_URL = (process.env.URL || "https://xpenny.netlify.app").replace(/\/$/, "");
 const BOT_USERNAME = (process.env.NEYNAR_BOT_USERNAME || "xtoken123").replace(/^@/, "");
 const NEYNAR_API_BASE = "https://api.neynar.com/v2/farcaster";
+const BACKGROUND_FUNCTION_URL = `${SITE_URL}/.netlify/functions/neynar-openclaw-background`;
 
 function json(statusCode, body) {
   return {
@@ -94,6 +95,12 @@ function buildOpenClawHeaders() {
     : OPENCLAW_AGENT_TOKEN;
 
   return { [OPENCLAW_AGENT_AUTH_HEADER]: value };
+}
+
+function buildBackgroundHeaders() {
+  const { OPENCLAW_AGENT_TOKEN } = process.env;
+
+  return OPENCLAW_AGENT_TOKEN ? { Authorization: `Bearer ${OPENCLAW_AGENT_TOKEN}` } : {};
 }
 
 function extractOpenClawReply(payload) {
@@ -195,6 +202,35 @@ async function publishReply({ text, parent, parentAuthorFid }) {
   return { posted: true, payload };
 }
 
+async function enqueueOpenClawReply({ prompt, miniAppUrl, cast }) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 4500);
+
+  try {
+    const response = await fetch(BACKGROUND_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...buildBackgroundHeaders(),
+      },
+      body: JSON.stringify({
+        prompt,
+        miniAppUrl,
+        cast,
+      }),
+      signal: controller.signal,
+    });
+
+    if (!response.ok && response.status !== 202) {
+      throw new Error(`Background function returned HTTP ${response.status}`);
+    }
+
+    return true;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "GET") {
     return json(200, {
@@ -204,6 +240,7 @@ exports.handler = async (event) => {
       configured: {
         openclaw: Boolean(process.env.OPENCLAW_AGENT_URL),
         neynar: Boolean(process.env.NEYNAR_API_KEY && process.env.NEYNAR_SIGNER_UUID),
+        background: Boolean(process.env.OPENCLAW_AGENT_TOKEN),
         signature: Boolean(process.env.NEYNAR_WEBHOOK_SECRET),
       },
     });
@@ -236,6 +273,23 @@ exports.handler = async (event) => {
 
   const url = miniAppUrl(prompt);
   let openClawReply = "";
+
+  if (process.env.NEYNAR_MENTION_SYNC_OPENCLAW !== "true") {
+    try {
+      await enqueueOpenClawReply({ prompt, miniAppUrl: url, cast });
+
+      return json(202, {
+        ok: true,
+        queued: true,
+        mode: "direct-background-reply",
+        prompt,
+        miniAppUrl: url,
+      });
+    } catch (error) {
+      console.error("OpenClaw background enqueue failed:", error);
+      openClawReply = "I received this, but the background OpenClaw worker did not start. Open Xpenny to run it there.";
+    }
+  }
 
   if (process.env.NEYNAR_MENTION_SYNC_OPENCLAW === "true") {
     try {

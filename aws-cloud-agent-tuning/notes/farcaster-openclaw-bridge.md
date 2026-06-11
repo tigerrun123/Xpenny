@@ -14,8 +14,9 @@ Mention flow:
 Cast mentions @xtoken123
   -> Neynar webhook
   -> Netlify /api/neynar/mention
-  -> Fast Neynar reply cast with https://xpenny.netlify.app?q=...
-  -> Mini App opens and asks AWS Lightsail OpenClaw
+  -> Netlify background function
+  -> AWS Lightsail OpenClaw
+  -> @xtoken123 replies with the answer and https://xpenny.netlify.app?q=...
 ```
 
 ## Implemented on the Mini App Side
@@ -26,9 +27,9 @@ Cast mentions @xtoken123
 - Added `?q=` Mini App deep-link support so a reply cast can open Xpenny and
   run the prompt automatically.
 - Added `POST /api/neynar/mention` for @mention automation through Neynar.
-- Kept the mention webhook fast by default: it replies with the Mini App link
-  immediately instead of waiting on slow OpenClaw calls, which prevents Neynar
-  webhook retries from creating duplicate replies.
+- Kept the mention webhook fast by default: it queues a background function
+  instead of waiting on slow OpenClaw calls, which prevents Neynar webhook
+  retries while still replying directly with the OpenClaw answer.
 
 The browser never receives the OpenClaw token. It only calls the Netlify Function.
 
@@ -55,6 +56,7 @@ For Neynar mention replies:
 NEYNAR_API_KEY=<Neynar API key>
 NEYNAR_SIGNER_UUID=<Neynar signer UUID for @xtoken123>
 NEYNAR_BOT_USERNAME=xtoken123
+NEYNAR_BOT_FID=3313201
 NEYNAR_WEBHOOK_SECRET=<optional Neynar webhook secret>
 NEYNAR_MENTION_SYNC_OPENCLAW=false
 ```
