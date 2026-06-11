@@ -79,7 +79,7 @@ exports.handler = async (event) => {
     return json(400, { ok: false, error: "Message is required" });
   }
 
-  const { OPENCLAW_AGENT_URL, OPENCLAW_AGENT_TIMEOUT_MS = "25000" } = process.env;
+  const { OPENCLAW_AGENT_URL, OPENCLAW_AGENT_TIMEOUT_MS = "55000" } = process.env;
 
   if (!OPENCLAW_AGENT_URL) {
     return json(200, {
@@ -135,7 +135,10 @@ exports.handler = async (event) => {
     return json(502, {
       ok: false,
       configured: true,
-      error: error.name === "AbortError" ? "AWS OpenClaw request timed out." : error.message,
+      error:
+        error.name === "AbortError"
+          ? "AWS OpenClaw is still thinking. Try again with a narrower question, or wait a moment and resend."
+          : error.message,
     });
   } finally {
     clearTimeout(timeout);
