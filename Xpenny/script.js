@@ -29,6 +29,10 @@ const elements = {
   activityList: document.querySelector("#activity-list"),
   runCycle: document.querySelector("#run-cycle"),
   reset: document.querySelector("#reset"),
+  openclawForm: document.querySelector("#openclaw-form"),
+  openclawInput: document.querySelector("#openclaw-input"),
+  openclawLog: document.querySelector("#openclaw-log"),
+  openclawStatus: document.querySelector("#openclaw-status"),
 };
 
 function formatNumber(value) {
@@ -97,8 +101,83 @@ function reset() {
   render();
 }
 
+function appendAgentMessage(kind, label, text) {
+  const item = document.createElement("article");
+  item.className = kind === "user" ? "user-message" : "agent-message";
+
+  const name = document.createElement("span");
+  name.textContent = label;
+
+  const body = document.createElement("p");
+  body.textContent = text;
+
+  item.append(name, body);
+  elements.openclawLog.append(item);
+  item.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function extractReply(payload) {
+  return (
+    payload?.reply ||
+    payload?.message ||
+    payload?.output_text ||
+    payload?.output ||
+    payload?.text ||
+    payload?.data?.reply ||
+    payload?.data?.message ||
+    ""
+  );
+}
+
+async function askOpenClaw(event) {
+  event.preventDefault();
+
+  const message = elements.openclawInput.value.trim();
+
+  if (!message) {
+    return;
+  }
+
+  const button = elements.openclawForm.querySelector("button");
+  elements.openclawInput.value = "";
+  elements.openclawInput.disabled = true;
+  button.disabled = true;
+  elements.openclawStatus.textContent = "Contacting AWS OpenClaw...";
+  appendAgentMessage("user", "You", message);
+
+  try {
+    const response = await fetch("/api/openclaw/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message,
+        source: "xpenny-farcaster-miniapp",
+      }),
+    });
+
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      throw new Error(payload.error || `OpenClaw bridge returned HTTP ${response.status}`);
+    }
+
+    appendAgentMessage("agent", "OpenClaw", extractReply(payload) || "No reply text returned.");
+    elements.openclawStatus.textContent = payload.configured
+      ? "Connected to AWS OpenClaw."
+      : "Netlify bridge is live; AWS endpoint is not configured yet.";
+  } catch (error) {
+    appendAgentMessage("agent", "Bridge", error.message);
+    elements.openclawStatus.textContent = "OpenClaw bridge needs attention.";
+  } finally {
+    elements.openclawInput.disabled = false;
+    button.disabled = false;
+    elements.openclawInput.focus();
+  }
+}
+
 elements.runCycle.addEventListener("click", runCycle);
 elements.reset.addEventListener("click", reset);
+elements.openclawForm.addEventListener("submit", askOpenClaw);
 
 render();
 

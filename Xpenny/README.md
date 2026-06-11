@@ -61,3 +61,22 @@ https://xpenny.netlify.app/.well-known/farcaster.json
 
 The manifest needs a real Farcaster `accountAssociation` signature before the
 mini app is production-ready.
+
+## OpenClaw Bridge
+
+The Mini App includes an `Ask OpenClaw` panel. Browser messages go to:
+
+```text
+/api/openclaw/chat
+```
+
+That path is served by `netlify/functions/openclaw-chat.js`, which forwards to
+AWS only when these Netlify environment variables are configured:
+
+```text
+OPENCLAW_AGENT_URL=<AWS OpenClaw bridge endpoint>
+OPENCLAW_AGENT_TOKEN=<optional shared token>
+```
+
+Keep OpenClaw tokens and AWS bridge secrets in Netlify environment variables,
+not in the frontend.
