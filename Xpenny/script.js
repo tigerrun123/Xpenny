@@ -158,7 +158,11 @@ async function askOpenClaw(event) {
     const payload = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      throw new Error(payload.error || `OpenClaw bridge returned HTTP ${response.status}`);
+      const fallback =
+        response.status === 502
+          ? "OpenClaw is still working on that request. Wait a moment and try again, or ask a narrower question."
+          : `OpenClaw bridge returned HTTP ${response.status}`;
+      throw new Error(payload.error || fallback);
     }
 
     appendAgentMessage("agent", "OpenClaw", extractReply(payload) || "No reply text returned.");
@@ -167,7 +171,9 @@ async function askOpenClaw(event) {
       : "Netlify bridge is live; AWS endpoint is not configured yet.";
   } catch (error) {
     appendAgentMessage("agent", "Bridge", error.message);
-    elements.openclawStatus.textContent = "OpenClaw bridge needs attention.";
+    elements.openclawStatus.textContent = error.message.includes("still")
+      ? "OpenClaw is slow on this request."
+      : "OpenClaw bridge needs attention.";
   } finally {
     elements.openclawInput.disabled = false;
     button.disabled = false;

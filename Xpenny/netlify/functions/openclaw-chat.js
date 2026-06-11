@@ -79,7 +79,7 @@ exports.handler = async (event) => {
     return json(400, { ok: false, error: "Message is required" });
   }
 
-  const { OPENCLAW_AGENT_URL, OPENCLAW_AGENT_TIMEOUT_MS = "55000" } = process.env;
+  const { OPENCLAW_AGENT_URL, OPENCLAW_AGENT_TIMEOUT_MS = "60000" } = process.env;
 
   if (!OPENCLAW_AGENT_URL) {
     return json(200, {
