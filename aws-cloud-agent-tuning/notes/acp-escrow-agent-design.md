@@ -497,3 +497,67 @@ Recommended next step:
 ```text
 Implement the bridge/test CLI first, then decide whether to attach it to real Telegram inbound messages.
 ```
+
+## 2026-06-17 Runtime Commerce Skill Direction
+
+The better long-term architecture is not a Telegram-specific bridge. Telegram should be just one channel adapter.
+
+The shared layer should be an OpenClaw Runtime Commerce skill:
+
+```text
+Telegram / Virtuals ACP / Web API / Farcaster / WhatsApp
+        |
+        v
+OpenClaw Runtime Commerce Skill
+  - JobEnvelope normalization
+  - ledger-only escrow lifecycle
+  - policy checks
+  - work-agent routing
+  - evaluator-agent hook
+  - wallet-executor hook
+        |
+        v
+Work agents
+  - main
+  - market-observer
+  - risk-evaluator
+  - signal-agent
+  - funding-trader
+  - vault-executor
+```
+
+Implemented repo prototype:
+
+```text
+aws-cloud-agent-tuning/skills/openclaw-runtime-commerce/
+aws-cloud-agent-tuning/scripts/install-openclaw-runtime-commerce.sh
+```
+
+Core command shape:
+
+```sh
+commerce-job run \
+  --source telegram \
+  --source-user telegram:8686051916:xtoke2000 \
+  --offering telegram_chat \
+  --agent main \
+  --amount 0.01 \
+  --token USDC \
+  --input "hello" \
+  --dry-run
+```
+
+The prototype creates one normalized commerce job and moves it through:
+
+```text
+created
+awaiting_funds
+funded
+locked
+work_started
+delivered
+release_recommended
+released
+```
+
+This is the preferred foundation for future evaluator and wallet-executor agents.
