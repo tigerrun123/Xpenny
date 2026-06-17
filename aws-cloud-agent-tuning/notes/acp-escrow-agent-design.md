@@ -561,3 +561,70 @@ released
 ```
 
 This is the preferred foundation for future evaluator and wallet-executor agents.
+
+## 2026-06-17 Telegram Chat Evaluator v1
+
+Implemented the first evaluator inside the OpenClaw Runtime Commerce skill:
+
+```text
+aws-cloud-agent-tuning/skills/openclaw-runtime-commerce/src/evaluators/telegram-chat.js
+```
+
+Purpose:
+
+```text
+Telegram chat completed
+  -> evaluator reads original input and delivered reply
+  -> evaluator emits pass / fail / needs_review
+  -> commerce flow maps that to release / refund / dispute
+```
+
+Current rule-based checks:
+
+```text
+non_empty_reply
+  Reply artifact must exist.
+
+no_error_marker
+  Reply should not contain obvious runtime failure markers such as error, failed, unauthorized, mismatch, exception, traceback, missing.
+
+basic_relevance
+  First-pass lightweight relevance check using token overlap and minimum reply length.
+```
+
+Output shape:
+
+```json
+{
+  "evaluator": "telegram-chat-v1",
+  "verdict": "pass",
+  "decision": "release_recommended",
+  "score": 0.9,
+  "reason": "Telegram chat reply is present and passes the basic completion checks.",
+  "checks": [
+    { "name": "non_empty_reply", "status": "pass" },
+    { "name": "no_error_marker", "status": "pass" },
+    { "name": "basic_relevance", "status": "pass" }
+  ]
+}
+```
+
+Decision mapping:
+
+```text
+pass
+  -> release_recommended
+  -> released in ledger-only mode
+
+fail
+  -> refund_recommended
+
+needs_review
+  -> disputed / manual review
+```
+
+Next evaluator phase:
+
+```text
+Replace or augment telegram-chat-v1 with an evaluator-agent that can reason over input, terms, reply quality, and channel context.
+```

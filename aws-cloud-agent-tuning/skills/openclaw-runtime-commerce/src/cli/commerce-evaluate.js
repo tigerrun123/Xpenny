@@ -4,7 +4,13 @@ const { showJob } = require('../ledger');
 
 function help() {
   return `Usage:
-  commerce-evaluate --job <job_id>`;
+  commerce-evaluate --job <job_id>
+
+Evaluates the delivered artifact for a commerce job.
+For telegram_chat jobs, uses telegram-chat-v1 checks:
+  - non_empty_reply
+  - no_error_marker
+  - basic_relevance`;
 }
 
 async function main(argv) {
@@ -18,4 +24,3 @@ async function main(argv) {
 }
 
 module.exports = { main };
-

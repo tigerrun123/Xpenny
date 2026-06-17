@@ -26,7 +26,7 @@ It does not:
 
 Future phases add:
 
-- evaluator-agent integrations
+- evaluator-agent integrations beyond the current rule-based evaluators
 - wallet-executor integrations
 - channel hooks for Telegram, ACP, Web/API, Farcaster, and WhatsApp
 
@@ -42,6 +42,43 @@ commerce-ledger show <job_id>
 commerce-evaluate --job <job_id>
 ```
 
+## Evaluators
+
+Current evaluator:
+
+```text
+telegram-chat-v1
+```
+
+Checks:
+
+```text
+non_empty_reply
+no_error_marker
+basic_relevance
+```
+
+Output shape:
+
+```json
+{
+  "evaluator": "telegram-chat-v1",
+  "verdict": "pass",
+  "decision": "release_recommended",
+  "score": 0.9,
+  "reason": "...",
+  "checks": []
+}
+```
+
+Verdict mapping:
+
+```text
+pass -> release_recommended -> released
+fail -> refund_recommended
+needs_review -> disputed / manual review
+```
+
 ## Ledger
 
 Default ledger path:
@@ -55,4 +92,3 @@ Default policy path:
 ```text
 $OPENCLAW_WORKSPACE/commerce/policy.json
 ```
-
