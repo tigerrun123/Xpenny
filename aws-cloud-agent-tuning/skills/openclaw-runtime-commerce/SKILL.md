@@ -30,6 +30,25 @@ Future phases add:
 - wallet-executor integrations
 - channel hooks for Telegram, ACP, Web/API, Farcaster, and WhatsApp
 
+The first channel adapter is installed by:
+
+```sh
+install-telegram-commerce-adapter.sh
+```
+
+It maps a Telegram inbound message to:
+
+```sh
+commerce-job run \
+  --source telegram \
+  --source-user telegram:<user_id>:<username> \
+  --offering telegram_chat \
+  --agent main \
+  --amount 0.01 \
+  --token USDC \
+  --input "<message>"
+```
+
 ## Commands
 
 ```sh

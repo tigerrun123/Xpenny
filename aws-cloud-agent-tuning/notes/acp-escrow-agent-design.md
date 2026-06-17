@@ -628,3 +628,53 @@ Next evaluator phase:
 ```text
 Replace or augment telegram-chat-v1 with an evaluator-agent that can reason over input, terms, reply quality, and channel context.
 ```
+
+## 2026-06-17 Telegram Runtime Commerce Adapter
+
+Implemented a Telegram inbound adapter that calls the channel-agnostic Runtime Commerce skill instead of the older Telegram-specific escrow bridge.
+
+Repo file:
+
+```text
+aws-cloud-agent-tuning/scripts/install-telegram-commerce-adapter.sh
+```
+
+Runtime install target:
+
+```text
+$OPENCLAW_WORKSPACE/tools/telegram-commerce-adapter.js
+$HOME/bin/telegram-commerce-adapter
+$HOME/.config/systemd/user/telegram-commerce-adapter.service
+```
+
+Message flow:
+
+```text
+Telegram getUpdates
+  -> telegram-commerce-adapter
+  -> commerce-job run --source telegram --offering telegram_chat
+  -> JobEnvelope
+  -> ledger-only escrow lifecycle
+  -> work agent / fallback
+  -> telegram-chat-v1 evaluator
+  -> released / refund_recommended / disputed
+  -> Telegram reply containing job id, status, evaluator, verdict, and score
+```
+
+Important channel note:
+
+```text
+Do not run multiple consumers against the same Telegram bot token unless they are coordinated.
+OpenClaw's native Telegram channel and telegram-commerce-adapter can compete for getUpdates.
+For a clean test, run only telegram-commerce-adapter as the bot update consumer.
+```
+
+Test commands on AWS:
+
+```sh
+bash /path/to/aws-cloud-agent-tuning/scripts/install-openclaw-runtime-commerce.sh
+bash /path/to/aws-cloud-agent-tuning/scripts/install-telegram-commerce-adapter.sh
+telegram-commerce-adapter --once --dry-run
+systemctl --user enable --now telegram-commerce-adapter.service
+systemctl --user status telegram-commerce-adapter.service --no-pager
+```
