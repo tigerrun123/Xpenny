@@ -30,3 +30,9 @@ Current commerce/escrow prototype:
 
 - `skills/openclaw-runtime-commerce/`: channel-agnostic ledger-only commerce lifecycle skill.
 - `scripts/install-openclaw-runtime-commerce.sh`: installer for the OpenClaw workspace.
+
+Solana Blinks:
+
+- `plugins/solana-blinks/`: OpenClaw HTTP plugin for a wallet-signed SOL payment Action.
+- `skills/solana-blinks/`: Telegram-facing agent instructions and safety boundaries.
+- `scripts/install-solana-blinks.sh`: Lightsail installer; requires only a public recipient address and the instance HTTPS URL.

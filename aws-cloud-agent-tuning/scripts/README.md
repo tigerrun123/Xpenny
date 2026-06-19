@@ -8,3 +8,4 @@ Use this folder for local helper scripts.
 - `install-openclaw-runtime-commerce.sh`: install the channel-agnostic OpenClaw Runtime Commerce skill.
 - `install-telegram-commerce-adapter.sh`: install the Telegram inbound adapter that converts Telegram messages into Runtime Commerce jobs.
 - `install-telegram-escrow-bridge.sh`: install the Telegram inbound bridge that creates ledger-only escrow jobs per chat.
+- `install-solana-blinks.sh`: install the wallet-signed SOL payment Action and Telegram-facing Blink skill into OpenClaw.
