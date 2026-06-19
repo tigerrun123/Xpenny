@@ -148,6 +148,21 @@ function replyForJob(job) {
 async function handleMessage(msg, opts) {
   if (!msg.text) return false;
 
+  if (/^\s*hello\s+solana[!?.\s]*$/i.test(msg.text)) {
+    const blinkUrl = process.env.SOLANA_HELLO_BLINK_URL;
+    if (!blinkUrl) throw new Error('SOLANA_HELLO_BLINK_URL is not configured.');
+    await telegram('sendMessage', {
+      chat_id: msg.chat.id,
+      text: [
+        'Hello Solana Blink test:',
+        blinkUrl,
+        '',
+        'This signs a memo-only transaction. No SOL or tokens are transferred; the normal Solana network fee applies.'
+      ].join('\n')
+    });
+    return true;
+  }
+
   if (msg.text.startsWith('/start')) {
     await telegram('sendMessage', {
       chat_id: msg.chat.id,
@@ -222,6 +237,8 @@ JS
 
 chmod +x "$TOOLS/telegram-commerce-adapter.js"
 ln -sf "$TOOLS/telegram-commerce-adapter.js" "$HOME/bin/telegram-commerce-adapter"
+SYSTEMD_SOLANA_HELLO_BLINK_URL="${SOLANA_HELLO_BLINK_URL:-}"
+SYSTEMD_SOLANA_HELLO_BLINK_URL="${SYSTEMD_SOLANA_HELLO_BLINK_URL//%/%%}"
 
 cat > "$HOME/.config/systemd/user/telegram-commerce-adapter.service" <<EOF
 [Unit]
@@ -236,6 +253,7 @@ Restart=always
 RestartSec=5
 Environment=NODE_ENV=production
 Environment=PATH=$HOME/bin:/usr/local/bin:/usr/bin:/bin
+Environment="SOLANA_HELLO_BLINK_URL=$SYSTEMD_SOLANA_HELLO_BLINK_URL"
 
 [Install]
 WantedBy=default.target

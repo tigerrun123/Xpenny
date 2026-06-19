@@ -1,5 +1,8 @@
 {
   "id": "solana-blinks",
+  "activation": {
+    "onStartup": true
+  },
   "name": "Solana Blinks",
   "description": "Public Solana Action routes for wallet-signed SOL payment Blinks.",
   "configSchema": {
