@@ -191,6 +191,39 @@ Do not pass arbitrary user prompts straight into a privileged OpenClaw runtime. 
 
 The current MVP proves invocation, discovery, escrow, and completion. Correctness of real-world task execution still needs off-chain verification, TEE attestation, oracle checks, user acceptance, or dispute handling.
 
+## Deploy Worker To AWS Lightsail
+
+The Solana program still deploys to Solana. Lightsail runs the execution worker and optional payload demo.
+
+From a cloned copy of this repo on the Lightsail instance:
+
+```sh
+./scripts/install-solana-agent-invocation.sh \
+  --program-id YOUR_DEPLOYED_PROGRAM_ID \
+  --owner-keypair /home/ubuntu/.config/solana/owner.json \
+  --agent-signer-keypair /home/ubuntu/.config/solana/openclaw-agent-signer.json \
+  --manifest-uri https://your-domain.example/openclaw-agent-manifest.json \
+  --manifest-hash YOUR_MANIFEST_SHA256_HEX \
+  --openclaw-task-url http://127.0.0.1:3040/tasks \
+  --rpc-url https://api.devnet.solana.com \
+  --agent-slug lobster \
+  --price-lamports 1000000 \
+  --install-web
+```
+
+Then register the agent once:
+
+```sh
+cd ~/.openclaw/solana-agent-invocation
+npm run register-agent
+```
+
+Check logs:
+
+```sh
+journalctl --user -u openclaw-solana-invocation-worker.service -f
+```
+
 ## GitHub Save Flow
 
 From the repo root:
