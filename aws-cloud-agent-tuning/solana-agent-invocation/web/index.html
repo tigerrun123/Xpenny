@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OpenClaw Solana Invocation</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main>
+      <section class="panel">
+        <h1>OpenClaw Invocation</h1>
+        <p>Create a task payload, upload it to S3/IPFS/Arweave, then pass the URI to the CLI or wallet client.</p>
+        <textarea id="task">{"task":"Research one Solana agent registry design and return a short summary.","mode":"research"}</textarea>
+        <button id="hash">Hash payload</button>
+        <pre id="output"></pre>
+      </section>
+    </main>
+    <script src="/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "openclaw-solana-invocation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "register-agent": "tsx src/register-agent.ts",
+    "invoke-agent": "tsx src/invoke-agent.ts",
+    "worker": "tsx src/worker.ts",
+    "web": "tsx src/web.ts"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.30.1",
+    "@solana/web3.js": "^1.95.8",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2"
+  }
+}

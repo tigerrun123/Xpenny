@@ -36,3 +36,7 @@ Solana Blinks:
 - `plugins/solana-blinks/`: OpenClaw HTTP plugin for a wallet-signed SOL payment Action.
 - `skills/solana-blinks/`: Telegram-facing agent instructions and safety boundaries.
 - `scripts/install-solana-blinks.sh`: Lightsail installer; requires only a public recipient address and the instance HTTPS URL.
+
+Solana Agent Invocation MVP:
+
+- `solana-agent-invocation/`: Anchor program, TypeScript worker, CLI clients, and a small payload demo for turning the AWS OpenClaw instance into a Solana-discoverable invocation endpoint.
