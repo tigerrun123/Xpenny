@@ -3,6 +3,7 @@
 Use this folder for local helper scripts.
 
 - `lightsail-openclaw-check.sh`: basic AWS OpenClaw runtime diagnostics.
+- `assign-openclaw-aws-agent-registry.sh`: create/update a DynamoDB agent registry entry and assign OpenClaw as the active AWS agent.
 - `install-xpenny-openclaw-bridge.sh`: install the existing Xpenny/OpenClaw bridge.
 - `install-openclaw-runtime-escrow.sh`: install the ledger-only OpenClaw runtime escrow CLI.
 - `install-openclaw-runtime-commerce.sh`: install the channel-agnostic OpenClaw Runtime Commerce skill.

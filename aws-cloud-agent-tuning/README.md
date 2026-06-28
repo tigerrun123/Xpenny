@@ -31,6 +31,13 @@ Current commerce/escrow prototype:
 - `skills/openclaw-runtime-commerce/`: channel-agnostic ledger-only commerce lifecycle skill.
 - `scripts/install-openclaw-runtime-commerce.sh`: installer for the OpenClaw workspace.
 
+AWS Agent Registry:
+
+- `scripts/assign-openclaw-aws-agent-registry.sh`: creates/updates a DynamoDB registry record for the OpenClaw agent and stores the active assignment in SSM Parameter Store.
+- `src/registry-router.js`: minimal `Search Registry -> Invoke OpenClaw` demo router.
+- `configs/aws-agent-registry.env.example`: safe example configuration for the registry assignment.
+- `notes/aws-agent-registry-openclaw.md`: apply and verification runbook.
+
 Solana Blinks:
 
 - `plugins/solana-blinks/`: OpenClaw HTTP plugin for a wallet-signed SOL payment Action.
