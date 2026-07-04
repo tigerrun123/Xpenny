@@ -1,0 +1,22 @@
+{
+  "id": "deagent-ledger",
+  "activation": {
+    "onStartup": true
+  },
+  "name": "DeAgent Ledger",
+  "description": "Solana devnet ledgerability adapter for OpenClaw agent, invocation, and reputation PDAs.",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "rpcUrl": {
+        "type": "string",
+        "default": "https://api.devnet.solana.com"
+      },
+      "programId": {
+        "type": "string",
+        "default": "5SfS5maRBYUE3sEnfRX4xjNzRpPNhXPEsQjboCVKb41e"
+      }
+    }
+  }
+}
