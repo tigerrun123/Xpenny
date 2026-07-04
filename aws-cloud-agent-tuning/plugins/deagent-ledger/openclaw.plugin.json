@@ -1,0 +1,13 @@
+{
+  "id": "deagent-ledger",
+  "activation": {
+    "onStartup": true
+  },
+  "name": "DeAgent Ledger",
+  "description": "Reusable DeAgent ledger SDK/plugin for Solana agent registration, invocation, reputation, and escrow.",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

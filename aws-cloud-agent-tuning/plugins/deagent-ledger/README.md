@@ -10,6 +10,7 @@ This package is intentionally independent from OpenClaw core logic. It exposes a
 plugins/deagent-ledger/
   README.md
   package.json
+  openclaw.plugin.json
   anchor/
     Anchor.toml
     Cargo.toml
