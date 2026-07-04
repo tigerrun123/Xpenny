@@ -1,62 +1,143 @@
 # DeAgent Ledger Plugin
 
-Solana Ledgerability adapter for OpenClaw.
+Reusable Solana Ledgerability SDK/plugin skeleton for OpenClaw.
 
-This plugin is intentionally independent from OpenClaw core logic. It exposes a small JavaScript API that can be loaded as an OpenClaw plugin or imported directly by an AWS worker.
+This package is intentionally independent from OpenClaw core logic. It exposes a clean TypeScript interface that can later be wired to Solana devnet without forcing Solana configuration at compile time.
 
-## Phase 1 Scope
+## Layout
 
-- Devnet only.
-- No mainnet support.
-- No token transfer.
-- Agent PDA: implemented through the existing OpenClaw invocation program.
-- Invocation PDA: implemented through the existing OpenClaw invocation program.
-- Reputation PDA: deterministic address and read helper only. The current devnet program does not create a reputation account yet.
-- Escrow: API reserved for phase 2. `depositEscrow()` and `releasePayment()` return `not_implemented` and do not transfer funds.
-
-## Unified API
-
-```js
-import { createDeAgentLedger } from "./index.js";
-
-const ledger = createDeAgentLedger({
-  ownerKeypairPath: process.env.OWNER_KEYPAIR,
-  requesterKeypairPath: process.env.REQUESTER_KEYPAIR,
-  agentSignerKeypairPath: process.env.AGENT_SIGNER_KEYPAIR
-});
-
-await ledger.registerAgent({
-  slug: "openclaw-aws-agent",
-  manifestUri: "https://example.com/openclaw-agent-manifest.json",
-  manifestHash: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-});
-
-await ledger.createInvocation({
-  owner: ledger.ownerPublicKey(),
-  slug: "openclaw-aws-agent",
-  inputJson: { task: "Summarize the request." }
-});
-
-await ledger.submitResult({
-  invocation: "INVOCATION_PDA",
-  agent: "AGENT_PDA",
-  resultJson: { ok: true, output: "..." }
-});
-
-await ledger.readReputation({ agent: "AGENT_PDA" });
+```text
+plugins/deagent-ledger/
+  README.md
+  package.json
+  anchor/
+    Anchor.toml
+    Cargo.toml
+    programs/
+      deagent_ledger/
+  src/
+    index.ts
+    types.ts
+    config.ts
+    registry.ts
+    invocation.ts
+    reputation.ts
+    anchor.ts
+    utils.ts
 ```
 
-## Environment
+## Public API
+
+```ts
+import {
+  registerAgent,
+  getAgent,
+  createInvocation,
+  submitResult,
+  updateReputation
+} from "openclaw-deagent-ledger";
+
+await registerAgent({ agentId: "openclaw-main" });
+```
+
+Current exported functions are placeholders:
+
+- `registerAgent()`
+- `getAgent()`
+- `createInvocation()`
+- `submitResult()`
+- `updateReputation()`
+
+Each function currently throws `Not implemented`. This is deliberate: the package should compile and load as an SDK/plugin skeleton before Solana accounts, wallets, program IDs, or RPC endpoints are configured.
+
+## Build
 
 ```sh
-cp .env.example .env
+npm install
+npm run check
+npm run build
 ```
 
-Defaults:
+## Anchor Program
 
-- `SOLANA_RPC_URL=https://api.devnet.solana.com`
-- `DEAGENT_LEDGER_PROGRAM_ID=5SfS5maRBYUE3sEnfRX4xjNzRpPNhXPEsQjboCVKb41e`
+The Anchor workspace lives under `anchor/` and targets Solana devnet.
 
-## Notes
+Program:
 
-`registerAgent()` defaults `priceLamports` to `0` so phase 1 creates identity and invocation records without payment movement. If a caller passes a non-zero price to the underlying program, the program may escrow SOL lamports on invocation; this plugin does not use that path by default.
+- `deagent_ledger`
+
+Instruction:
+
+- `register_agent`
+- `create_invocation`
+- `submit_result`
+- `initialize_reputation`
+- `update_reputation`
+- `deposit_escrow`
+- `release_payment`
+
+Accounts:
+
+- `AgentAccount`
+- `InvocationAccount`
+- `ReputationAccount`
+- `EscrowAccount`
+
+PDA seeds:
+
+```text
+["agent", authority_pubkey, agent_id]
+["invocation", agent_account, requester_pubkey, nonce_le_bytes]
+["reputation", agent_account]
+["escrow", invocation_account]
+```
+
+`InvocationAccount` stores:
+
+- task hash
+- status
+- input URI
+- output URI
+- created, updated, and completed timestamps
+
+`ReputationAccount` stores:
+
+- score
+- completed invocation count
+- failed invocation count
+- updated timestamp
+
+`EscrowAccount` stores:
+
+- invocation
+- agent
+- requester
+- SPL token mint
+- escrow vault token account
+- amount
+- status
+- created and released timestamps
+
+Escrow uses SPL Token CPI:
+
+- `deposit_escrow` transfers SPL tokens from the requester token account into a program-owned vault.
+- `release_payment` transfers SPL tokens from the vault to the agent authority token account.
+
+The program does not implement SOL payments, token minting, disputes, refunds, or escrow cancellation yet.
+
+The workspace is pinned to Anchor `1.0.0`, the latest stable release listed on the official Anchor GitHub releases page at the time this scaffold was created.
+
+```sh
+cd anchor
+anchor build
+```
+
+## Architecture
+
+- `config.ts`: config shape and defaults.
+- `registry.ts`: agent registry API.
+- `invocation.ts`: invocation lifecycle API.
+- `reputation.ts`: reputation API.
+- `anchor.ts`: future Anchor adapter boundary.
+- `utils.ts`: shared helpers.
+- `types.ts`: public request/response types.
