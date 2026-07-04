@@ -1,3 +1,7 @@
+import { createInvocation, submitResult } from "./invocation.js";
+import { updateReputation } from "./reputation.js";
+import { getAgent, registerAgent } from "./registry.js";
+
 export {
   DEFAULT_CLUSTER,
   DEFAULT_DEVNET_RPC_URL,
@@ -7,6 +11,23 @@ export { createAnchorAdapter } from "./anchor.js";
 export { registerAgent, getAgent } from "./registry.js";
 export { createInvocation, submitResult } from "./invocation.js";
 export { updateReputation } from "./reputation.js";
+
+export function activate() {
+  return {
+    id: "deagent-ledger",
+    api: {
+      registerAgent,
+      getAgent,
+      createInvocation,
+      submitResult,
+      updateReputation
+    }
+  };
+}
+
+export function register() {
+  return activate();
+}
 
 export type {
   AgentRecord,
