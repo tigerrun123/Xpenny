@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openclawai.live/schemas/channels/vision/event.schema.json",
+  "title": "OpenClaw Vision Channel Event",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["type"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["gesture", "location", "motion", "image_snapshot", "spatial_json"]
+    },
+    "source": {
+      "type": "string"
+    },
+    "camera": {
+      "type": ["object", "null"]
+    },
+    "location": {
+      "type": ["object", "null"],
+      "properties": {
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "accuracy": { "type": "number" },
+        "timestamp": { "type": "string" }
+      }
+    },
+    "motion": {
+      "type": ["object", "null"]
+    },
+    "gesture": {
+      "type": ["object", "string", "null"]
+    },
+    "imageSnapshot": {
+      "type": ["object", "null"],
+      "properties": {
+        "mimeType": { "type": "string" },
+        "dataUrl": { "type": "string" },
+        "width": { "type": "number" },
+        "height": { "type": "number" }
+      }
+    },
+    "spatial": {
+      "type": ["object", "array", "null"]
+    },
+    "payload": {
+      "type": ["object", "array", "string", "number", "boolean", "null"]
+    },
+    "timestamp": {
+      "type": "string"
+    }
+  }
+}

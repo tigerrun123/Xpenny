@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#101418">
+    <title>OpenClaw Vision</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="preview">
+        <video id="preview" playsinline autoplay muted></video>
+        <div id="placeholder" class="placeholder">Camera preview</div>
+      </section>
+
+      <section class="panel" aria-label="Vision controls">
+        <div>
+          <p class="eyebrow">OpenClaw Vision</p>
+          <h1>iPhone camera stream</h1>
+          <p id="status" class="status">Ready to request camera access.</p>
+          <p id="locationStatus" class="status secondary">Location not shared.</p>
+        </div>
+
+        <div class="actions">
+          <button id="startButton" type="button">Start camera</button>
+          <button id="locationButton" type="button">Share GPS</button>
+          <select id="sceneSelect" aria-label="Vision scene">
+            <option value="">General image</option>
+            <option value="construction">Construction image</option>
+            <option value="meeting">Meeting screenshot</option>
+            <option value="spatial">Spatial JSON</option>
+          </select>
+          <button id="eventButton" type="button" disabled>Send test event</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
