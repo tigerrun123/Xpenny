@@ -2,6 +2,8 @@ const video = document.querySelector("#preview");
 const placeholder = document.querySelector("#placeholder");
 const statusText = document.querySelector("#status");
 const locationStatus = document.querySelector("#locationStatus");
+const mediaStatus = document.querySelector("#mediaStatus");
+const audioLevel = document.querySelector("#audioLevel");
 const startButton = document.querySelector("#startButton");
 const locationButton = document.querySelector("#locationButton");
 const sceneSelect = document.querySelector("#sceneSelect");
@@ -17,6 +19,8 @@ let stream;
 let latestLocation;
 let speechRecognition;
 let speechRecognitionSupported = false;
+let audioContext;
+let audioMeterFrame;
 
 function setStatus(message) {
   statusText.textContent = message;
@@ -24,6 +28,10 @@ function setStatus(message) {
 
 function setLocationStatus(message) {
   locationStatus.textContent = message;
+}
+
+function setMediaStatus(message) {
+  mediaStatus.textContent = message;
 }
 
 function setVoiceStatus(message) {
@@ -84,28 +92,121 @@ async function startCamera() {
     return;
   }
 
+  stopAudioMeter();
+
   try {
-    stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: { ideal: "environment" },
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
-      },
-      audio: false
-    });
+    stream = await requestMediaStream(true);
 
     video.srcObject = stream;
     placeholder.hidden = true;
     eventButton.disabled = false;
-    setStatus("Camera is active.");
+    startAudioMeter(stream);
+    setStatus("Camera and microphone are active.");
   } catch (error) {
-    setStatus(`Camera permission failed: ${error.message}`);
+    try {
+      stream = await requestMediaStream(false);
+      video.srcObject = stream;
+      placeholder.hidden = true;
+      eventButton.disabled = false;
+      setStatus("Camera is active.");
+      setMediaStatus(`Microphone not active: ${error.message}`);
+    } catch (fallbackError) {
+      setStatus(`Media permission failed: ${fallbackError.message}`);
+      setMediaStatus("Microphone not active.");
+    }
   }
+}
+
+function requestMediaStream(includeAudio) {
+  return navigator.mediaDevices.getUserMedia({
+    video: {
+      facingMode: { ideal: "environment" },
+      width: { ideal: 1280 },
+      height: { ideal: 720 }
+    },
+    audio: includeAudio
+      ? {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      }
+      : false
+  });
+}
+
+function getAudioTrackInfo() {
+  const track = stream?.getAudioTracks()[0];
+
+  if (!track) {
+    return null;
+  }
+
+  return {
+    label: track.label || null,
+    enabled: track.enabled,
+    muted: track.muted,
+    readyState: track.readyState,
+    settings: track.getSettings ? track.getSettings() : {}
+  };
+}
+
+function stopAudioMeter() {
+  if (audioMeterFrame) {
+    cancelAnimationFrame(audioMeterFrame);
+    audioMeterFrame = null;
+  }
+
+  if (audioContext) {
+    audioContext.close();
+    audioContext = null;
+  }
+
+  audioLevel.style.width = "0";
+}
+
+function startAudioMeter(mediaStream) {
+  const audioTrack = mediaStream.getAudioTracks()[0];
+
+  if (!audioTrack) {
+    setMediaStatus("Microphone not active.");
+    return;
+  }
+
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContext) {
+    setMediaStatus("Microphone is active. Audio meter is not supported in this browser.");
+    return;
+  }
+
+  audioContext = new AudioContext();
+  const source = audioContext.createMediaStreamSource(new MediaStream([audioTrack]));
+  const analyser = audioContext.createAnalyser();
+  const samples = new Uint8Array(analyser.fftSize);
+
+  analyser.fftSize = 512;
+  source.connect(analyser);
+  setMediaStatus("Microphone is active.");
+
+  function updateMeter() {
+    analyser.getByteTimeDomainData(samples);
+
+    let peak = 0;
+    for (const sample of samples) {
+      peak = Math.max(peak, Math.abs(sample - 128));
+    }
+
+    audioLevel.style.width = `${Math.min(100, Math.round((peak / 128) * 140))}%`;
+    audioMeterFrame = requestAnimationFrame(updateMeter);
+  }
+
+  updateMeter();
 }
 
 async function sendVisionEvent() {
   const track = stream?.getVideoTracks()[0];
   const settings = track?.getSettings() || {};
+  const microphone = getAudioTrackInfo();
   const imageSnapshot = captureImageSnapshot();
   const scene = sceneSelect.value;
   const eventType = scene === "spatial" ? "spatial_json" : imageSnapshot ? "image_snapshot" : "location";
@@ -121,6 +222,7 @@ async function sendVisionEvent() {
         source: "iphone-safari",
         scene: scene || null,
         camera: settings,
+        microphone,
         location: latestLocation || null,
         imageSnapshot,
         spatial_json: scene === "spatial" ? buildSpatialJson() : null,

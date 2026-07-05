@@ -108,6 +108,7 @@ function normalizeVisionEvent(event) {
     scene: event.scene || null,
     receivedAt: new Date().toISOString(),
     camera: event.camera || null,
+    microphone: event.microphone || null,
     location: event.location || null,
     motion: event.motion || null,
     gesture: event.gesture || null,

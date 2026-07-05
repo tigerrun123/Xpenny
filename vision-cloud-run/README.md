@@ -99,7 +99,16 @@ default image model target.
 
 ## Voice Query Bridge
 
-The browser page also exposes a voice/text query path:
+The browser page requests iPhone media with `getUserMedia({ video, audio })`.
+That gives the page camera and microphone tracks after the user grants permission.
+The media tracks are separate from the semantic OpenClaw query path:
+
+- Camera frames become `image_snapshot` vision events.
+- Microphone access is shown with an audio meter and attached as track metadata.
+- Speech recognition, when available in the browser, turns spoken words into text.
+- The text question is sent to OpenClaw through `/voice-query`.
+
+The browser page exposes the voice/text query path:
 
 ```http
 POST /voice-query

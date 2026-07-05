@@ -20,10 +20,14 @@
           <h1>iPhone camera stream</h1>
           <p id="status" class="status">Ready to request camera access.</p>
           <p id="locationStatus" class="status secondary">Location not shared.</p>
+          <p id="mediaStatus" class="status secondary">Microphone not active.</p>
+          <div class="audio-meter" aria-hidden="true">
+            <span id="audioLevel"></span>
+          </div>
         </div>
 
         <div class="actions">
-          <button id="startButton" type="button">Start camera</button>
+          <button id="startButton" type="button">Start camera + mic</button>
           <button id="locationButton" type="button">Share GPS</button>
           <select id="sceneSelect" aria-label="Vision scene">
             <option value="">General image</option>
