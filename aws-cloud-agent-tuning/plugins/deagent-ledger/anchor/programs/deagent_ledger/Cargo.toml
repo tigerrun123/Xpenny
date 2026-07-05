@@ -18,3 +18,4 @@ no-log-ix-name = []
 [dependencies]
 anchor-lang = "0.32.1"
 anchor-spl = "0.32.1"
+zeroize = "=1.8.1"
