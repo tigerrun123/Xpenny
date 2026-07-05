@@ -126,7 +126,7 @@ Escrow uses SPL Token CPI:
 
 The program does not implement SOL payments, token minting, disputes, refunds, or escrow cancellation yet.
 
-The workspace is pinned to Anchor `1.0.0`, the latest stable release listed on the official Anchor GitHub releases page at the time this scaffold was created.
+The workspace is pinned to Anchor `0.32.1`, matching the latest published `@coral-xyz/anchor` package checked before deployment.
 
 ```sh
 cd anchor
