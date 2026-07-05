@@ -320,8 +320,8 @@ function serveStatic(req, res) {
     const ext = path.extname(filePath);
     res.writeHead(200, {
       "content-type": contentTypes[ext] || "application/octet-stream",
-      "cache-control": ext === ".html" ? "no-store" : "public, max-age=3600",
-      "permissions-policy": "camera=(self)",
+      "cache-control": "no-store",
+      "permissions-policy": "camera=(self), microphone=(self)",
       "x-content-type-options": "nosniff"
     });
     res.end(data);

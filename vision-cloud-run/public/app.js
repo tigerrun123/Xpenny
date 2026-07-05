@@ -16,6 +16,7 @@ const replyText = document.querySelector("#replyText");
 let stream;
 let latestLocation;
 let speechRecognition;
+let speechRecognitionSupported = false;
 
 function setStatus(message) {
   statusText.textContent = message;
@@ -27,6 +28,15 @@ function setLocationStatus(message) {
 
 function setVoiceStatus(message) {
   voiceStatus.textContent = message;
+}
+
+function detectSpeechRecognition() {
+  speechRecognitionSupported = Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
+
+  if (!speechRecognitionSupported) {
+    setVoiceStatus("Voice input is not available in this browser. Type your question, then tap Ask OpenClaw.");
+    listenButton.disabled = true;
+  }
 }
 
 function requestLocation() {
@@ -188,8 +198,20 @@ function getSpeechRecognition() {
       }
     });
 
+    speechRecognition.addEventListener("audiostart", () => {
+      setVoiceStatus("Microphone is listening...");
+    });
+
+    speechRecognition.addEventListener("speechstart", () => {
+      setVoiceStatus("Speech detected...");
+    });
+
+    speechRecognition.addEventListener("nomatch", () => {
+      setVoiceStatus("No speech was recognized. Try again or type your question.");
+    });
+
     speechRecognition.addEventListener("end", () => {
-      setVoiceStatus("Voice input captured.");
+      setVoiceStatus(voiceInput.value.trim() ? "Voice input captured." : "Listening ended. Try again or type your question.");
       listenButton.disabled = false;
     });
 
@@ -212,7 +234,13 @@ function startVoiceInput() {
 
   listenButton.disabled = true;
   setVoiceStatus("Listening...");
-  recognition.start();
+
+  try {
+    recognition.start();
+  } catch (error) {
+    listenButton.disabled = false;
+    setVoiceStatus(`Voice input could not start: ${error.message}. Type your question instead.`);
+  }
 }
 
 function speakReply(reply) {
@@ -276,3 +304,4 @@ locationButton.addEventListener("click", requestLocation);
 eventButton.addEventListener("click", sendVisionEvent);
 listenButton.addEventListener("click", startVoiceInput);
 voiceForm.addEventListener("submit", askOpenClaw);
+detectSpeechRecognition();
