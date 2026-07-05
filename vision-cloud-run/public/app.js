@@ -5,6 +5,7 @@ const locationStatus = document.querySelector("#locationStatus");
 const mediaStatus = document.querySelector("#mediaStatus");
 const audioLevel = document.querySelector("#audioLevel");
 const startButton = document.querySelector("#startButton");
+const micButton = document.querySelector("#micButton");
 const locationButton = document.querySelector("#locationButton");
 const sceneSelect = document.querySelector("#sceneSelect");
 const eventButton = document.querySelector("#eventButton");
@@ -93,6 +94,8 @@ async function startCamera() {
   }
 
   stopAudioMeter();
+  setStatus("Requesting camera and microphone permission...");
+  setMediaStatus("Requesting microphone...");
 
   try {
     stream = await requestMediaStream(true);
@@ -103,16 +106,19 @@ async function startCamera() {
     startAudioMeter(stream);
     setStatus("Camera and microphone are active.");
   } catch (error) {
+    const microphoneError = getErrorMessage(error);
+
     try {
+      setStatus("Microphone was not granted. Requesting camera only...");
       stream = await requestMediaStream(false);
       video.srcObject = stream;
       placeholder.hidden = true;
       eventButton.disabled = false;
       setStatus("Camera is active.");
-      setMediaStatus(`Microphone not active: ${error.message}`);
+      setMediaStatus(`Microphone not active: ${microphoneError}. Tap Start mic to retry.`);
     } catch (fallbackError) {
-      setStatus(`Media permission failed: ${fallbackError.message}`);
-      setMediaStatus("Microphone not active.");
+      setStatus(`Media permission failed: ${getErrorMessage(fallbackError)}`);
+      setMediaStatus(`Microphone not active: ${microphoneError}`);
     }
   }
 }
@@ -132,6 +138,52 @@ function requestMediaStream(includeAudio) {
       }
       : false
   });
+}
+
+async function startMicrophone() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    setMediaStatus("This browser does not support getUserMedia.");
+    return;
+  }
+
+  stopAudioMeter();
+  setMediaStatus("Requesting microphone...");
+
+  try {
+    const micStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      },
+      video: false
+    });
+    const [audioTrack] = micStream.getAudioTracks();
+
+    if (!audioTrack) {
+      setMediaStatus("Microphone not active: no audio track returned.");
+      return;
+    }
+
+    if (!stream) {
+      stream = new MediaStream();
+    }
+
+    for (const oldTrack of stream.getAudioTracks()) {
+      stream.removeTrack(oldTrack);
+      oldTrack.stop();
+    }
+
+    stream.addTrack(audioTrack);
+    startAudioMeter(stream);
+    setMediaStatus("Microphone is active.");
+  } catch (error) {
+    setMediaStatus(`Microphone not active: ${getErrorMessage(error)}`);
+  }
+}
+
+function getErrorMessage(error) {
+  return error?.message || error?.name || "permission was not granted";
 }
 
 function getAudioTrackInfo() {
@@ -182,11 +234,15 @@ function startAudioMeter(mediaStream) {
   audioContext = new AudioContext();
   const source = audioContext.createMediaStreamSource(new MediaStream([audioTrack]));
   const analyser = audioContext.createAnalyser();
-  const samples = new Uint8Array(analyser.fftSize);
 
   analyser.fftSize = 512;
+  const samples = new Uint8Array(analyser.fftSize);
   source.connect(analyser);
   setMediaStatus("Microphone is active.");
+
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
 
   function updateMeter() {
     analyser.getByteTimeDomainData(samples);
@@ -402,6 +458,7 @@ async function askOpenClaw(event) {
 }
 
 startButton.addEventListener("click", startCamera);
+micButton.addEventListener("click", startMicrophone);
 locationButton.addEventListener("click", requestLocation);
 eventButton.addEventListener("click", sendVisionEvent);
 listenButton.addEventListener("click", startVoiceInput);
