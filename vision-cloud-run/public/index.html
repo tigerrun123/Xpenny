@@ -33,6 +33,21 @@
           </select>
           <button id="eventButton" type="button" disabled>Send test event</button>
         </div>
+
+        <form id="voiceForm" class="voice-form">
+          <label class="field-label" for="voiceInput">Ask OpenClaw</label>
+          <textarea
+            id="voiceInput"
+            rows="3"
+            placeholder="Ask with voice or type a question..."
+          ></textarea>
+          <div class="voice-actions">
+            <button id="listenButton" type="button">Start voice</button>
+            <button id="askButton" type="submit">Ask OpenClaw</button>
+          </div>
+          <p id="voiceStatus" class="status secondary">Voice query ready.</p>
+          <p id="replyText" class="reply" aria-live="polite"></p>
+        </form>
       </section>
     </main>
 

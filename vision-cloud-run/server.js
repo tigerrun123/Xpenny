@@ -6,6 +6,11 @@ const port = Number(process.env.PORT || 8080);
 const publicDir = path.join(__dirname, "public");
 const openClawVisionWebhookUrl = process.env.OPENCLAW_VISION_WEBHOOK_URL || "";
 const openClawVisionWebhookToken = process.env.OPENCLAW_VISION_WEBHOOK_TOKEN || "";
+const openClawAgentUrl = process.env.OPENCLAW_AGENT_URL || "";
+const openClawAgentToken = process.env.OPENCLAW_AGENT_TOKEN || "";
+const openClawAgentAuthHeader = process.env.OPENCLAW_AGENT_AUTH_HEADER || "Authorization";
+const openClawAgentAuthScheme = process.env.OPENCLAW_AGENT_AUTH_SCHEME || "Bearer";
+const openClawAgentTimeoutMs = Number(process.env.OPENCLAW_AGENT_TIMEOUT_MS || 60000);
 const visionImageModelTarget = process.env.VISION_IMAGE_MODEL_TARGET || "gemini_vision";
 const visionEventTypes = new Set([
   "gesture",
@@ -58,6 +63,28 @@ function readBody(req) {
 
 function createEventId() {
   return `vision_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function createVoiceQueryId() {
+  return `voice_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function extractReply(payload) {
+  if (typeof payload === "string") {
+    return payload;
+  }
+
+  return (
+    payload?.reply ||
+    payload?.message ||
+    payload?.output_text ||
+    payload?.output ||
+    payload?.text ||
+    payload?.choices?.[0]?.message?.content ||
+    payload?.data?.reply ||
+    payload?.data?.message ||
+    ""
+  );
 }
 
 function normalizeVisionEvent(event) {
@@ -198,6 +225,80 @@ async function forwardToOpenClaw(envelope, route) {
   };
 }
 
+function buildOpenClawAgentHeaders() {
+  if (!openClawAgentToken) {
+    return {};
+  }
+
+  const value = openClawAgentAuthScheme
+    ? `${openClawAgentAuthScheme} ${openClawAgentToken}`
+    : openClawAgentToken;
+
+  return {
+    [openClawAgentAuthHeader]: value
+  };
+}
+
+async function askOpenClawAgent(query) {
+  if (!openClawAgentUrl) {
+    return {
+      ok: true,
+      configured: false,
+      reply: "Voice bridge is working. Set OPENCLAW_AGENT_URL on Cloud Run to send this question to OpenClaw.",
+      raw: null
+    };
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), openClawAgentTimeoutMs);
+
+  try {
+    const response = await fetch(openClawAgentUrl, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        ...buildOpenClawAgentHeaders()
+      },
+      body: JSON.stringify(query),
+      signal: controller.signal
+    });
+
+    const contentType = response.headers.get("content-type") || "";
+    const payload = contentType.includes("application/json")
+      ? await response.json()
+      : await response.text();
+
+    if (!response.ok) {
+      return {
+        ok: false,
+        configured: true,
+        status: response.status,
+        reply: "",
+        error: `OpenClaw returned HTTP ${response.status}`,
+        raw: payload
+      };
+    }
+
+    return {
+      ok: true,
+      configured: true,
+      status: response.status,
+      reply: extractReply(payload) || "OpenClaw returned no reply text.",
+      raw: extractReply(payload) ? null : payload
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      configured: true,
+      reply: "",
+      error: error.name === "AbortError" ? "OpenClaw request timed out." : error.message,
+      raw: null
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 function serveStatic(req, res) {
   const requestedPath = new URL(req.url, "http://localhost").pathname;
   const safePath = path.normalize(requestedPath).replace(/^(\.\.[/\\])+/, "");
@@ -228,6 +329,57 @@ function serveStatic(req, res) {
 }
 
 const server = http.createServer(async (req, res) => {
+  if (req.method === "POST" && req.url === "/voice-query") {
+    try {
+      const rawBody = await readBody(req);
+      const body = rawBody ? JSON.parse(rawBody) : {};
+      const message = String(body.message || body.query || "").trim();
+
+      if (!message) {
+        sendJson(res, 400, {
+          ok: false,
+          error: "Message is required"
+        });
+        return;
+      }
+
+      const query = {
+        id: body.id || createVoiceQueryId(),
+        channel: "voice",
+        type: "voice_query",
+        source: body.source || "iphone-safari",
+        message,
+        location: body.location || null,
+        context: body.context || null,
+        timestamp: body.timestamp || new Date().toISOString()
+      };
+      const openclaw = await askOpenClawAgent(query);
+
+      console.log("voice-query", {
+        queryId: query.id,
+        configured: openclaw.configured,
+        ok: openclaw.ok,
+        source: query.source,
+        hasLocation: Boolean(query.location)
+      });
+
+      sendJson(res, openclaw.ok ? 200 : 502, {
+        ok: openclaw.ok,
+        queryId: query.id,
+        configured: openclaw.configured,
+        reply: openclaw.reply,
+        error: openclaw.error,
+        raw: openclaw.raw
+      });
+    } catch (error) {
+      sendJson(res, 400, {
+        ok: false,
+        error: error.message
+      });
+    }
+    return;
+  }
+
   if (req.method === "POST" && req.url === "/vision-event") {
     try {
       const rawBody = await readBody(req);

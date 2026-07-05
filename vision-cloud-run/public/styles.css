@@ -83,6 +83,47 @@ h1 {
   gap: 10px;
 }
 
+.voice-form {
+  display: grid;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.field-label {
+  color: #dce5e8;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+textarea {
+  width: 100%;
+  min-height: 86px;
+  resize: vertical;
+  border: 1px solid #52646d;
+  border-radius: 8px;
+  background: #101418;
+  color: #f4f7f8;
+  font: inherit;
+  padding: 12px;
+}
+
+textarea::placeholder {
+  color: #7f929b;
+}
+
+.voice-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.reply {
+  min-height: 24px;
+  margin: 0;
+  color: #f4f7f8;
+  line-height: 1.45;
+}
+
 button {
   min-height: 48px;
   border: 1px solid #52646d;

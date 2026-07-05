@@ -97,6 +97,40 @@ Default routing:
 Set `VISION_IMAGE_MODEL_TARGET=gpt_vision` or `grok_vision` to switch the
 default image model target.
 
+## Voice Query Bridge
+
+The browser page also exposes a voice/text query path:
+
+```http
+POST /voice-query
+content-type: application/json
+```
+
+Example payload:
+
+```json
+{
+  "message": "What restaurant is near me?",
+  "source": "iphone-safari",
+  "location": {
+    "latitude": -33.8688,
+    "longitude": 151.2093,
+    "accuracy": 25
+  },
+  "context": {
+    "scene": "general"
+  }
+}
+```
+
+Configure the real OpenClaw endpoint only on the server:
+
+```sh
+OPENCLAW_AGENT_URL=https://your-openclaw-host.example.com/bridge
+OPENCLAW_AGENT_TOKEN=optional-secret-token
+OPENCLAW_AGENT_TIMEOUT_MS=60000
+```
+
 ## Local run
 
 ```sh

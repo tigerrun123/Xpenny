@@ -6,9 +6,16 @@ const startButton = document.querySelector("#startButton");
 const locationButton = document.querySelector("#locationButton");
 const sceneSelect = document.querySelector("#sceneSelect");
 const eventButton = document.querySelector("#eventButton");
+const voiceForm = document.querySelector("#voiceForm");
+const voiceInput = document.querySelector("#voiceInput");
+const listenButton = document.querySelector("#listenButton");
+const askButton = document.querySelector("#askButton");
+const voiceStatus = document.querySelector("#voiceStatus");
+const replyText = document.querySelector("#replyText");
 
 let stream;
 let latestLocation;
+let speechRecognition;
 
 function setStatus(message) {
   statusText.textContent = message;
@@ -16,6 +23,10 @@ function setStatus(message) {
 
 function setLocationStatus(message) {
   locationStatus.textContent = message;
+}
+
+function setVoiceStatus(message) {
+  voiceStatus.textContent = message;
 }
 
 function requestLocation() {
@@ -153,6 +164,115 @@ function captureImageSnapshot() {
   };
 }
 
+function getSpeechRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    return null;
+  }
+
+  if (!speechRecognition) {
+    speechRecognition = new SpeechRecognition();
+    speechRecognition.lang = navigator.language || "en-US";
+    speechRecognition.interimResults = true;
+    speechRecognition.continuous = false;
+
+    speechRecognition.addEventListener("result", (event) => {
+      const transcript = Array.from(event.results)
+        .map((result) => result[0]?.transcript || "")
+        .join("")
+        .trim();
+
+      if (transcript) {
+        voiceInput.value = transcript;
+      }
+    });
+
+    speechRecognition.addEventListener("end", () => {
+      setVoiceStatus("Voice input captured.");
+      listenButton.disabled = false;
+    });
+
+    speechRecognition.addEventListener("error", (event) => {
+      setVoiceStatus(`Voice input failed: ${event.error}`);
+      listenButton.disabled = false;
+    });
+  }
+
+  return speechRecognition;
+}
+
+function startVoiceInput() {
+  const recognition = getSpeechRecognition();
+
+  if (!recognition) {
+    setVoiceStatus("Speech recognition is not available in this browser. Type your question instead.");
+    return;
+  }
+
+  listenButton.disabled = true;
+  setVoiceStatus("Listening...");
+  recognition.start();
+}
+
+function speakReply(reply) {
+  if (!window.speechSynthesis || !reply) {
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(reply);
+  utterance.lang = navigator.language || "en-US";
+  window.speechSynthesis.speak(utterance);
+}
+
+async function askOpenClaw(event) {
+  event.preventDefault();
+
+  const message = voiceInput.value.trim();
+
+  if (!message) {
+    setVoiceStatus("Ask a question first.");
+    return;
+  }
+
+  askButton.disabled = true;
+  setVoiceStatus("Asking OpenClaw...");
+
+  try {
+    const response = await fetch("/voice-query", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        message,
+        source: "iphone-safari",
+        location: latestLocation || null,
+        context: {
+          scene: sceneSelect.value || "general"
+        },
+        timestamp: new Date().toISOString()
+      })
+    });
+    const payload = await response.json();
+
+    if (!response.ok || !payload.ok) {
+      throw new Error(payload.error || `HTTP ${response.status}`);
+    }
+
+    replyText.textContent = payload.reply;
+    setVoiceStatus(payload.configured ? "OpenClaw replied." : "Bridge is ready; OpenClaw URL is not configured yet.");
+    speakReply(payload.reply);
+  } catch (error) {
+    setVoiceStatus(`OpenClaw query failed: ${error.message}`);
+  } finally {
+    askButton.disabled = false;
+  }
+}
+
 startButton.addEventListener("click", startCamera);
 locationButton.addEventListener("click", requestLocation);
 eventButton.addEventListener("click", sendVisionEvent);
+listenButton.addEventListener("click", startVoiceInput);
+voiceForm.addEventListener("submit", askOpenClaw);
