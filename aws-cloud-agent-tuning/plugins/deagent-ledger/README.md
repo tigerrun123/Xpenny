@@ -126,7 +126,7 @@ Escrow uses SPL Token CPI:
 
 The program does not implement SOL payments, token minting, disputes, refunds, or escrow cancellation yet.
 
-The workspace is pinned to Anchor `0.32.1`, matching the latest published `@coral-xyz/anchor` package checked before deployment.
+The workspace is pinned to Anchor `0.31.1` for Solana SBF toolchain compatibility on the current devnet deploy host.
 
 ```sh
 cd anchor
