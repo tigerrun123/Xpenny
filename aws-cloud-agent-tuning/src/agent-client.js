@@ -42,6 +42,7 @@ function extractAgentText(payload) {
     payload?.output_text ||
     payload?.output ||
     payload?.text ||
+    payload?.error ||
     payload?.choices?.[0]?.message?.content ||
     payload?.data?.reply ||
     payload?.data?.message ||
@@ -70,15 +71,15 @@ export async function askCloudAgent({ chatId, userText, history }) {
         signal: controller.signal,
       });
 
-      if (!response.ok) {
-        throw new Error(`Cloud agent returned HTTP ${response.status}`);
-      }
-
       const contentType = response.headers.get("content-type") || "";
       const payload = contentType.includes("application/json")
         ? await response.json()
         : await response.text();
       const text = extractAgentText(payload);
+
+      if (!response.ok && !text) {
+        throw new Error(`Cloud agent returned HTTP ${response.status}`);
+      }
 
       if (!text) {
         throw new Error("Cloud agent response did not contain reply text.");
@@ -109,4 +110,3 @@ export async function askCloudAgent({ chatId, userText, history }) {
 
   return response.output_text;
 }
-

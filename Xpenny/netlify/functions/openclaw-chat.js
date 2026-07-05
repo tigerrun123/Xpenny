@@ -29,6 +29,7 @@ function extractReply(payload) {
     payload?.output_text ||
     payload?.output ||
     payload?.text ||
+    payload?.error ||
     payload?.choices?.[0]?.message?.content ||
     payload?.data?.reply ||
     payload?.data?.message ||
@@ -116,20 +117,23 @@ exports.handler = async (event) => {
     const payload = contentType.includes("application/json")
       ? await response.json()
       : await response.text();
+    const reply = extractReply(payload);
 
     if (!response.ok) {
-      return json(response.status, {
-        ok: false,
+      return json(reply ? 200 : response.status, {
+        ok: Boolean(reply),
         configured: true,
         error: `AWS OpenClaw endpoint returned HTTP ${response.status}`,
+        reply: reply || undefined,
+        raw: reply ? undefined : payload,
       });
     }
 
     return json(200, {
       ok: true,
       configured: true,
-      reply: extractReply(payload) || "AWS OpenClaw returned no reply text.",
-      raw: extractReply(payload) ? undefined : payload,
+      reply: reply || "AWS OpenClaw returned no reply text.",
+      raw: reply ? undefined : payload,
     });
   } catch (error) {
     return json(502, {
