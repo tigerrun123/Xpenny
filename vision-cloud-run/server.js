@@ -87,6 +87,53 @@ function extractReply(payload) {
   );
 }
 
+function formatLocationContext(location) {
+  if (!location || typeof location !== "object") {
+    return "";
+  }
+
+  const latitude = Number(location.latitude);
+  const longitude = Number(location.longitude);
+
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    return "";
+  }
+
+  const details = [
+    `latitude=${latitude}`,
+    `longitude=${longitude}`
+  ];
+
+  if (Number.isFinite(Number(location.accuracy))) {
+    details.push(`accuracy_m=${Math.round(Number(location.accuracy))}`);
+  }
+
+  if (location.timestamp) {
+    details.push(`timestamp=${location.timestamp}`);
+  }
+
+  return [
+    "Device GPS context from the user's iPhone browser permission:",
+    details.join(", "),
+    `map=https://maps.google.com/?q=${latitude},${longitude}`,
+    "Use this GPS context as the user's current location for this answer."
+  ].join("\n");
+}
+
+function buildAgentQuery(query) {
+  const locationContext = formatLocationContext(query.location);
+
+  if (!locationContext) {
+    return query;
+  }
+
+  return {
+    ...query,
+    originalMessage: query.message,
+    message: `${query.message}\n\n${locationContext}`
+  };
+}
+
 function normalizeVisionEvent(event) {
   if (!event || typeof event !== "object" || Array.isArray(event)) {
     throw new Error("JSON body must be an object");
@@ -254,13 +301,14 @@ async function askOpenClawAgent(query) {
   const timeout = setTimeout(() => controller.abort(), openClawAgentTimeoutMs);
 
   try {
+    const agentQuery = buildAgentQuery(query);
     const response = await fetch(openClawAgentUrl, {
       method: "POST",
       headers: {
         "content-type": "application/json",
         ...buildOpenClawAgentHeaders()
       },
-      body: JSON.stringify(query),
+      body: JSON.stringify(agentQuery),
       signal: controller.signal
     });
 
@@ -268,15 +316,16 @@ async function askOpenClawAgent(query) {
     const payload = contentType.includes("application/json")
       ? await response.json()
       : await response.text();
+    const reply = extractReply(payload);
 
     if (!response.ok) {
       return {
-        ok: false,
+        ok: Boolean(reply),
         configured: true,
         status: response.status,
-        reply: "",
-        error: `OpenClaw returned HTTP ${response.status}`,
-        raw: payload
+        reply,
+        error: reply ? undefined : `OpenClaw returned HTTP ${response.status}`,
+        raw: reply ? null : payload
       };
     }
 
@@ -284,8 +333,8 @@ async function askOpenClawAgent(query) {
       ok: true,
       configured: true,
       status: response.status,
-      reply: extractReply(payload) || "OpenClaw returned no reply text.",
-      raw: extractReply(payload) ? null : payload
+      reply: reply || "OpenClaw returned no reply text.",
+      raw: reply ? null : payload
     };
   } catch (error) {
     return {
