@@ -1,0 +1,20 @@
+{
+  "name": "openclaw-runtime-commerce",
+  "version": "0.1.0",
+  "description": "Channel-agnostic ledger-only commerce lifecycle skill for OpenClaw runtime jobs.",
+  "private": true,
+  "type": "commonjs",
+  "bin": {
+    "commerce-job": "./bin/commerce-job.js",
+    "commerce-ledger": "./bin/commerce-ledger.js",
+    "commerce-evaluate": "./bin/commerce-evaluate.js"
+  },
+  "scripts": {
+    "smoke": "node bin/commerce-job.js run --source test --source-user test:user --offering telegram_chat --agent main --amount 0.01 --token USDC --input \"hello\" --dry-run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}
+

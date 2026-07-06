@@ -1,0 +1,20 @@
+[package]
+name = "deagent_ledger"
+version = "0.1.0"
+description = "DeAgent Ledger Anchor program"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "deagent_ledger"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+
+[dependencies]
+anchor-lang = "1.0.0"
+anchor-spl = "1.0.0"
