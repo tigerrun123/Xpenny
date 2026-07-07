@@ -20,7 +20,9 @@
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1"
+  },
   "devDependencies": {
     "typescript": "^5.8.3"
   }
