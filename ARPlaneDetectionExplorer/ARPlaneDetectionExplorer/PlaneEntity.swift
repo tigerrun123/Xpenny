@@ -28,7 +28,7 @@ final class PlaneEntity: AnchorEntity {
         fatalError("init() has not been implemented")
     }
 
-    init(anchor: ARPlaneAnchor) {
+    init(anchor: ARPlaneAnchor, showMesh: Bool, showLabel: Bool, developerMode: Bool) {
         planeID = anchor.identifier
         super.init(anchor: anchor)
         addChild(surface)
@@ -38,7 +38,7 @@ final class PlaneEntity: AnchorEntity {
         addChild(anchorMarker)
         addChild(axisRoot)
         configureAxis()
-        update(with: anchor, showMesh: true, showLabel: true, developerMode: false)
+        update(with: anchor, showMesh: showMesh, showLabel: showLabel, developerMode: developerMode)
     }
 
     func update(with anchor: ARPlaneAnchor, showMesh: Bool, showLabel: Bool, developerMode: Bool) {

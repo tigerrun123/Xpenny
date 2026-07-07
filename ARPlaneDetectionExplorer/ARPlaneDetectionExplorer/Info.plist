@@ -20,6 +20,10 @@
     <string>$(CURRENT_PROJECT_VERSION)</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+        <string>arkit</string>
+    </array>
     <key>NSCameraUsageDescription</key>
     <string>ARPlaneDetectionExplorer uses the camera to run an ARKit world tracking session and detect horizontal and vertical planes.</string>
     <key>UIApplicationSceneManifest</key>

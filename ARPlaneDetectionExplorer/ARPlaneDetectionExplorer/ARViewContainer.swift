@@ -28,6 +28,7 @@ struct ARViewContainer: UIViewRepresentable {
         var viewModel: PlaneDetectionViewModel
         private weak var arView: ARView?
         private var planeEntities: [UUID: PlaneEntity] = [:]
+        private var latestPlaneAnchors: [UUID: ARPlaneAnchor] = [:]
         private var worldOrigin: AnchorEntity?
         private var lastFrameTimestamp: TimeInterval = 0
 
@@ -48,10 +49,18 @@ struct ARViewContainer: UIViewRepresentable {
         }
 
         func runSession(reset: Bool) {
-            guard ARWorldTrackingConfiguration.isSupported else { return }
+            guard ARWorldTrackingConfiguration.isSupported else {
+                Task { @MainActor in
+                    viewModel.trackingState = .notAvailable
+                    viewModel.sessionStatistics = "ARWorldTrackingConfiguration is not supported on this device."
+                }
+                return
+            }
+
             let configuration = ARWorldTrackingConfiguration()
             configuration.planeDetection = [.horizontal, .vertical]
             configuration.environmentTexturing = .automatic
+
             var options: ARSession.RunOptions = []
             if reset { options = [.resetTracking, .removeExistingAnchors] }
             arView?.session.run(configuration, options: options)
@@ -80,28 +89,44 @@ struct ARViewContainer: UIViewRepresentable {
         }
 
         func resetSession() {
-            planeEntities.values.forEach { $0.removeFromParent() }
-            planeEntities.removeAll()
+            removeAllPlaneVisualizations()
             Task { @MainActor in viewModel.removeAllPlanes() }
             runSession(reset: true)
         }
 
         func clearPlanes() {
-            planeEntities.values.forEach { $0.removeFromParent() }
-            planeEntities.removeAll()
+            removeAllPlaneVisualizations()
             Task { @MainActor in viewModel.removeAllPlanes() }
         }
 
         func applyVisibility() {
             worldOrigin?.isEnabled = viewModel.developerMode
-            for entity in planeEntities.values {
-                entity.isEnabled = true
+            for (id, entity) in planeEntities {
+                guard let anchor = latestPlaneAnchors[id] else { continue }
+                entity.update(
+                    with: anchor,
+                    showMesh: viewModel.showPlaneMesh,
+                    showLabel: viewModel.showPlaneLabels,
+                    developerMode: viewModel.developerMode
+                )
             }
+        }
+
+        private func removeAllPlaneVisualizations() {
+            planeEntities.values.forEach { $0.removeFromParent() }
+            planeEntities.removeAll()
+            latestPlaneAnchors.removeAll()
         }
 
         func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
             for case let anchor as ARPlaneAnchor in anchors {
-                let entity = PlaneEntity(anchor: anchor)
+                latestPlaneAnchors[anchor.identifier] = anchor
+                let entity = PlaneEntity(
+                    anchor: anchor,
+                    showMesh: viewModel.showPlaneMesh,
+                    showLabel: viewModel.showPlaneLabels,
+                    developerMode: viewModel.developerMode
+                )
                 arView?.scene.addAnchor(entity)
                 planeEntities[anchor.identifier] = entity
                 publish(anchor)
@@ -110,7 +135,13 @@ struct ARViewContainer: UIViewRepresentable {
 
         func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
             for case let anchor as ARPlaneAnchor in anchors {
-                planeEntities[anchor.identifier]?.update(with: anchor, showMesh: viewModel.showPlaneMesh, showLabel: viewModel.showPlaneLabels, developerMode: viewModel.developerMode)
+                latestPlaneAnchors[anchor.identifier] = anchor
+                planeEntities[anchor.identifier]?.update(
+                    with: anchor,
+                    showMesh: viewModel.showPlaneMesh,
+                    showLabel: viewModel.showPlaneLabels,
+                    developerMode: viewModel.developerMode
+                )
                 publish(anchor)
             }
         }
@@ -119,6 +150,7 @@ struct ARViewContainer: UIViewRepresentable {
             for anchor in anchors {
                 planeEntities[anchor.identifier]?.removeFromParent()
                 planeEntities.removeValue(forKey: anchor.identifier)
+                latestPlaneAnchors.removeValue(forKey: anchor.identifier)
                 Task { @MainActor in viewModel.removePlane(id: anchor.identifier) }
             }
         }
