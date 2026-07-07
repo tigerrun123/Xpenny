@@ -1,0 +1,26 @@
+[project]
+name = "youtube-shorts-agent"
+version = "0.1.0"
+description = "ADK bridge agent that forwards user requests to OpenClaw."
+requires-python = ">=3.11"
+dependencies = [
+  "google-adk>=1.0.0",
+  "google-api-python-client>=2.140.0",
+  "google-auth-oauthlib>=1.2.1",
+  "google-auth-httplib2>=0.2.0",
+  "imageio>=2.35.0",
+  "imageio-ffmpeg>=0.5.1",
+  "numpy>=1.26.0",
+  "pillow>=10.4.0",
+  "python-dotenv>=1.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+  "agents-cli>=0.1.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

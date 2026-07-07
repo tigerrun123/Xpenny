@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cesium x Google Agent Ride</title>
+    <link rel="preconnect" href="https://cesium.com" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cesium/1.119.0/Widgets/widgets.min.css"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="earth-pane" aria-label="Cesium 3D Earth route view">
+        <div id="cesiumContainer"></div>
+        <div class="route-badge">
+          <span class="status-dot"></span>
+          <div>
+            <strong id="routeTitle">Circular Quay → Martin Place</strong>
+            <span id="routeMeta">Bicycle route simulator</span>
+          </div>
+        </div>
+        <div class="toolbar" role="toolbar" aria-label="Ride controls">
+          <button id="playPause" class="icon-button primary" type="button" title="Play or pause ride">
+            ▶
+          </button>
+          <button id="resetRide" class="icon-button" type="button" title="Reset ride">↺</button>
+          <button id="streetStop" class="mode-button" type="button" title="Stop at street level">
+            Stop View
+          </button>
+          <label class="speed-control" title="Ride speed">
+            <span>Speed</span>
+            <input id="speedRange" type="range" min="0.5" max="3" value="1.2" step="0.1" />
+          </label>
+          <span id="progressLabel" class="progress-label">0%</span>
+        </div>
+      </section>
+
+      <aside class="side-pane" aria-label="Street View and agent controls">
+        <section class="streetview-panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow">Google Street View</span>
+              <h1 id="streetTitle">Sydney ride view</h1>
+            </div>
+            <button id="openMaps" class="small-button" type="button">Maps</button>
+          </div>
+          <div id="streetView" class="street-view">
+            <div class="street-scene" aria-hidden="true">
+              <div class="skyline"></div>
+              <div class="shop-row">
+                <div class="shop shop-cafe">
+                  <span>Cafe</span>
+                  <strong>Harbour Grind</strong>
+                </div>
+                <div class="shop shop-books">
+                  <span>Books</span>
+                  <strong>George St Reads</strong>
+                </div>
+                <div class="shop shop-market">
+                  <span>Market</span>
+                  <strong>City Grocer</strong>
+                </div>
+              </div>
+              <div class="road">
+                <span class="lane lane-left"></span>
+                <span class="lane lane-right"></span>
+              </div>
+              <div class="bike-parked">
+                <span class="wheel back"></span>
+                <span class="wheel front"></span>
+                <span class="frame"></span>
+                <span class="bar"></span>
+              </div>
+            </div>
+            <div class="street-fallback">
+              <span id="streetStep">Circular Quay</span>
+              <strong id="streetHeading">Facing south toward the CBD</strong>
+              <p id="streetCopy">
+                Add a Google Maps API key to enable live Street View panorama sync.
+              </p>
+            </div>
+          </div>
+          <div class="key-row">
+            <input
+              id="mapsKey"
+              type="password"
+              placeholder="Google Maps JavaScript API key"
+              autocomplete="off"
+            />
+            <button id="loadGoogle" type="button">Load</button>
+          </div>
+        </section>
+
+        <section class="agent-panel">
+          <div class="panel-header tight">
+            <div>
+              <span class="eyebrow">Agent Planner</span>
+              <h2>Natural language route control</h2>
+            </div>
+          </div>
+          <form id="agentForm" class="agent-form">
+            <textarea
+              id="agentPrompt"
+              rows="3"
+              spellcheck="false"
+            >骑自行车从 Circular Quay 到 Martin Place，沿途显示街景并介绍重要地点。</textarea>
+            <button type="submit">Plan Ride</button>
+          </form>
+          <div class="agent-output">
+            <div class="agent-line">
+              <span>Origin</span>
+              <strong id="originValue">Circular Quay, Sydney</strong>
+            </div>
+            <div class="agent-line">
+              <span>Destination</span>
+              <strong id="destinationValue">Martin Place, Sydney</strong>
+            </div>
+            <div class="agent-line">
+              <span>Mode</span>
+              <strong id="modeValue">BICYCLE</strong>
+            </div>
+            <pre id="agentJson" aria-label="Agent JSON plan"></pre>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cesium/1.119.0/Cesium.js"></script>
+    <script src="./src/app.js"></script>
+  </body>
+</html>

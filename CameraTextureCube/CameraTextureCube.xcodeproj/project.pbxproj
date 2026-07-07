@@ -1,0 +1,259 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6B2D20012C3D000100CC0001 /* CameraTextureCubeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2D20092C3D000100CC0001 /* CameraTextureCubeApp.swift */; };
+		6B2D20022C3D000100CC0001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2D200A2C3D000100CC0001 /* ContentView.swift */; };
+		6B2D20032C3D000100CC0001 /* RealityKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2D200B2C3D000100CC0001 /* RealityKitView.swift */; };
+		6B2D20042C3D000100CC0001 /* CameraTextureRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2D200C2C3D000100CC0001 /* CameraTextureRenderer.swift */; };
+		6B2D20052C3D000100CC0001 /* CubeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2D200D2C3D000100CC0001 /* CubeController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		6B2D20062C3D000100CC0001 /* CameraTextureCube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraTextureCube.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B2D20092C3D000100CC0001 /* CameraTextureCubeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraTextureCubeApp.swift; sourceTree = "<group>"; };
+		6B2D200A2C3D000100CC0001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6B2D200B2C3D000100CC0001 /* RealityKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealityKitView.swift; sourceTree = "<group>"; };
+		6B2D200C2C3D000100CC0001 /* CameraTextureRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraTextureRenderer.swift; sourceTree = "<group>"; };
+		6B2D200D2C3D000100CC0001 /* CubeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeController.swift; sourceTree = "<group>"; };
+		6B2D200E2C3D000100CC0001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6B2D20112C3D000100CC0001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6B2D20072C3D000100CC0001 = {
+			isa = PBXGroup;
+			children = (
+				6B2D20082C3D000100CC0001 /* CameraTextureCube */,
+				6B2D20152C3D000100CC0001 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6B2D20082C3D000100CC0001 /* CameraTextureCube */ = {
+			isa = PBXGroup;
+			children = (
+				6B2D20092C3D000100CC0001 /* CameraTextureCubeApp.swift */,
+				6B2D200A2C3D000100CC0001 /* ContentView.swift */,
+				6B2D200B2C3D000100CC0001 /* RealityKitView.swift */,
+				6B2D200C2C3D000100CC0001 /* CameraTextureRenderer.swift */,
+				6B2D200D2C3D000100CC0001 /* CubeController.swift */,
+				6B2D200E2C3D000100CC0001 /* Info.plist */,
+			);
+			path = CameraTextureCube;
+			sourceTree = "<group>";
+		};
+		6B2D20152C3D000100CC0001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6B2D20062C3D000100CC0001 /* CameraTextureCube.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6B2D20132C3D000100CC0001 /* CameraTextureCube */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6B2D20192C3D000100CC0001 /* Build configuration list for PBXNativeTarget "CameraTextureCube" */;
+			buildPhases = (
+				6B2D20102C3D000100CC0001 /* Sources */,
+				6B2D20112C3D000100CC0001 /* Frameworks */,
+				6B2D20122C3D000100CC0001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CameraTextureCube;
+			productName = CameraTextureCube;
+			productReference = 6B2D20062C3D000100CC0001 /* CameraTextureCube.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6B2D20162C3D000100CC0001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					6B2D20132C3D000100CC0001 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+				};
+			};
+			buildConfigurationList = 6B2D20182C3D000100CC0001 /* Build configuration list for PBXProject "CameraTextureCube" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6B2D20072C3D000100CC0001;
+			productRefGroup = 6B2D20152C3D000100CC0001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6B2D20132C3D000100CC0001 /* CameraTextureCube */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6B2D20122C3D000100CC0001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6B2D20102C3D000100CC0001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B2D20012C3D000100CC0001 /* CameraTextureCubeApp.swift in Sources */,
+				6B2D20022C3D000100CC0001 /* ContentView.swift in Sources */,
+				6B2D20032C3D000100CC0001 /* RealityKitView.swift in Sources */,
+				6B2D20042C3D000100CC0001 /* CameraTextureRenderer.swift in Sources */,
+				6B2D20052C3D000100CC0001 /* CubeController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		6B2D201A2C3D000100CC0001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JN9B3W2CBB;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CameraTextureCube/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bruceli.cameratexturecube;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		6B2D201B2C3D000100CC0001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JN9B3W2CBB;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CameraTextureCube/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bruceli.cameratexturecube;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		6B2D201C2C3D000100CC0001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6B2D201D2C3D000100CC0001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6B2D20182C3D000100CC0001 /* Build configuration list for PBXProject "CameraTextureCube" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6B2D201C2C3D000100CC0001 /* Debug */,
+				6B2D201D2C3D000100CC0001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6B2D20192C3D000100CC0001 /* Build configuration list for PBXNativeTarget "CameraTextureCube" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6B2D201A2C3D000100CC0001 /* Debug */,
+				6B2D201B2C3D000100CC0001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6B2D20162C3D000100CC0001 /* Project object */;
+}

@@ -1,0 +1,253 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5A7B10012C3C000100BB0001 /* RealityKitVisualizerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B10092C3C000100BB0001 /* RealityKitVisualizerApp.swift */; };
+		5A7B10022C3C000100BB0001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B100A2C3C000100BB0001 /* ContentView.swift */; };
+		5A7B10032C3C000100BB0001 /* RealityKitSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7B100B2C3C000100BB0001 /* RealityKitSceneView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5A7B10042C3C000100BB0001 /* RealityKitVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealityKitVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A7B10092C3C000100BB0001 /* RealityKitVisualizerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealityKitVisualizerApp.swift; sourceTree = "<group>"; };
+		5A7B100A2C3C000100BB0001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5A7B100B2C3C000100BB0001 /* RealityKitSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealityKitSceneView.swift; sourceTree = "<group>"; };
+		5A7B100C2C3C000100BB0001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5A7B10112C3C000100BB0001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5A7B10052C3C000100BB0001 = {
+			isa = PBXGroup;
+			children = (
+				5A7B10082C3C000100BB0001 /* RealityKitVisualizer */,
+				5A7B10062C3C000100BB0001 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5A7B10062C3C000100BB0001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5A7B10042C3C000100BB0001 /* RealityKitVisualizer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5A7B10082C3C000100BB0001 /* RealityKitVisualizer */ = {
+			isa = PBXGroup;
+			children = (
+				5A7B10092C3C000100BB0001 /* RealityKitVisualizerApp.swift */,
+				5A7B100A2C3C000100BB0001 /* ContentView.swift */,
+				5A7B100B2C3C000100BB0001 /* RealityKitSceneView.swift */,
+				5A7B100C2C3C000100BB0001 /* Info.plist */,
+			);
+			path = RealityKitVisualizer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5A7B10132C3C000100BB0001 /* RealityKitVisualizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5A7B10172C3C000100BB0001 /* Build configuration list for PBXNativeTarget "RealityKitVisualizer" */;
+			buildPhases = (
+				5A7B10102C3C000100BB0001 /* Sources */,
+				5A7B10112C3C000100BB0001 /* Frameworks */,
+				5A7B10122C3C000100BB0001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RealityKitVisualizer;
+			productName = RealityKitVisualizer;
+			productReference = 5A7B10042C3C000100BB0001 /* RealityKitVisualizer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5A7B10072C3C000100BB0001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					5A7B10132C3C000100BB0001 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+				};
+			};
+			buildConfigurationList = 5A7B10162C3C000100BB0001 /* Build configuration list for PBXProject "RealityKitVisualizer" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5A7B10052C3C000100BB0001;
+			productRefGroup = 5A7B10062C3C000100BB0001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5A7B10132C3C000100BB0001 /* RealityKitVisualizer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5A7B10122C3C000100BB0001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5A7B10102C3C000100BB0001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5A7B10012C3C000100BB0001 /* RealityKitVisualizerApp.swift in Sources */,
+				5A7B10022C3C000100BB0001 /* ContentView.swift in Sources */,
+				5A7B10032C3C000100BB0001 /* RealityKitSceneView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5A7B10182C3C000100BB0001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JN9B3W2CBB;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RealityKitVisualizer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bruceli.realitykitvisualizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		5A7B10192C3C000100BB0001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JN9B3W2CBB;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RealityKitVisualizer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bruceli.realitykitvisualizer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		5A7B101A2C3C000100BB0001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		5A7B101B2C3C000100BB0001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5A7B10162C3C000100BB0001 /* Build configuration list for PBXProject "RealityKitVisualizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A7B101A2C3C000100BB0001 /* Debug */,
+				5A7B101B2C3C000100BB0001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5A7B10172C3C000100BB0001 /* Build configuration list for PBXNativeTarget "RealityKitVisualizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A7B10182C3C000100BB0001 /* Debug */,
+				5A7B10192C3C000100BB0001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5A7B10072C3C000100BB0001 /* Project object */;
+}
