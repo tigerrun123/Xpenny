@@ -35,6 +35,10 @@ struct ARViewContainer: UIViewRepresentable {
             self.viewModel = viewModel
         }
 
+        deinit {
+            NotificationCenter.default.removeObserver(self)
+        }
+
         func install(on arView: ARView) {
             self.arView = arView
             arView.session.delegate = self

@@ -2,7 +2,7 @@ import ARKit
 import RealityKit
 import UIKit
 
-final class PlaneEntity: Entity, HasAnchoring {
+final class PlaneEntity: AnchorEntity {
     private static let planeMaterial = UnlitMaterial(color: UIColor.systemBlue.withAlphaComponent(0.32))
     private static let borderMaterial = UnlitMaterial(color: .white)
     private static let labelMaterial = UnlitMaterial(color: .white)
@@ -14,22 +14,26 @@ final class PlaneEntity: Entity, HasAnchoring {
 
     private let surface = ModelEntity()
     private let borderRoot = Entity()
+    private let frontBorder = ModelEntity()
+    private let backBorder = ModelEntity()
+    private let leftBorder = ModelEntity()
+    private let rightBorder = ModelEntity()
     private let label = ModelEntity()
     private let anchorMarker = ModelEntity(mesh: .generateSphere(radius: 0.018), materials: [UnlitMaterial(color: .systemYellow)])
     private let axisRoot = Entity()
 
     private(set) var planeID: UUID
 
-    required init() {
+    @MainActor required init() {
         fatalError("init() has not been implemented")
     }
 
     init(anchor: ARPlaneAnchor) {
         planeID = anchor.identifier
-        super.init()
-        anchoring = AnchoringComponent(anchor)
+        super.init(anchor: anchor)
         addChild(surface)
         addChild(borderRoot)
+        [frontBorder, backBorder, leftBorder, rightBorder].forEach { borderRoot.addChild($0) }
         addChild(label)
         addChild(anchorMarker)
         addChild(axisRoot)
@@ -69,17 +73,15 @@ final class PlaneEntity: Entity, HasAnchoring {
     }
 
     private func updateBorder(width: Float, length: Float, center: SIMD3<Float>) {
-        borderRoot.children.removeAll()
         let thickness: Float = 0.008
-        let front = ModelEntity(mesh: .generateBox(size: [width, thickness, thickness]), materials: [Self.borderMaterial])
-        front.position = center + SIMD3<Float>(0, 0.002, length / 2)
-        let back = ModelEntity(mesh: .generateBox(size: [width, thickness, thickness]), materials: [Self.borderMaterial])
-        back.position = center + SIMD3<Float>(0, 0.002, -length / 2)
-        let left = ModelEntity(mesh: .generateBox(size: [thickness, thickness, length]), materials: [Self.borderMaterial])
-        left.position = center + SIMD3<Float>(-width / 2, 0.002, 0)
-        let right = ModelEntity(mesh: .generateBox(size: [thickness, thickness, length]), materials: [Self.borderMaterial])
-        right.position = center + SIMD3<Float>(width / 2, 0.002, 0)
-        [front, back, left, right].forEach { borderRoot.addChild($0) }
+        frontBorder.model = ModelComponent(mesh: .generateBox(size: [width, thickness, thickness]), materials: [Self.borderMaterial])
+        frontBorder.position = center + SIMD3<Float>(0, 0.002, length / 2)
+        backBorder.model = ModelComponent(mesh: .generateBox(size: [width, thickness, thickness]), materials: [Self.borderMaterial])
+        backBorder.position = center + SIMD3<Float>(0, 0.002, -length / 2)
+        leftBorder.model = ModelComponent(mesh: .generateBox(size: [thickness, thickness, length]), materials: [Self.borderMaterial])
+        leftBorder.position = center + SIMD3<Float>(-width / 2, 0.002, 0)
+        rightBorder.model = ModelComponent(mesh: .generateBox(size: [thickness, thickness, length]), materials: [Self.borderMaterial])
+        rightBorder.position = center + SIMD3<Float>(width / 2, 0.002, 0)
     }
 
     private func configureAxis() {

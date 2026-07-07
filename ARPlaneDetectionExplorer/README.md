@@ -37,12 +37,27 @@ Plane anchors are estimates. As the user moves the phone, ARKit can grow, shrink
 
 Materials are static and reused to avoid recreating them every frame. Plane entities are updated in place as ARKit refines anchors.
 
-## Running
+## Get the project onto your Mac
 
-1. Open `ARPlaneDetectionExplorer.xcodeproj` in Xcode 15 or later.
-2. Select an iPhone running iOS 17 or later. ARKit requires a physical device for camera-based world tracking.
-3. Build and run.
-4. Move the phone slowly around horizontal and vertical surfaces until translucent blue planes appear.
+Use Git as the source of truth and clone the repository into a normal local folder before opening it in Xcode:
+
+```bash
+git clone <github-repository-url>
+cd <repository-folder>
+git checkout feature/arkit-plane-detection
+open ARPlaneDetectionExplorer/ARPlaneDetectionExplorer.xcodeproj
+```
+
+The project includes a shared Xcode scheme named `ARPlaneDetectionExplorer`, so Xcode and `xcodebuild` can discover the app target from a fresh clone.
+
+## Running and deploying from Xcode
+
+1. Open `ARPlaneDetectionExplorer/ARPlaneDetectionExplorer.xcodeproj` in Xcode 15 or later.
+2. Select the shared `ARPlaneDetectionExplorer` scheme.
+3. Select an iPhone running iOS 17 or later. ARKit camera world tracking requires a physical iOS device.
+4. In **Signing & Capabilities**, choose your Apple Development Team if Xcode asks for signing configuration.
+5. Build and run.
+6. Move the phone slowly around horizontal and vertical surfaces until translucent blue planes appear.
 
 ## Verification
 
