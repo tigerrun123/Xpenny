@@ -1,0 +1,69 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1132DCBDA1ED407B8FF6EB4D /* ARPlaneDetectionExplorerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2551CEC887724C988D795548 /* ARPlaneDetectionExplorerApp.swift */; };
+		7252AF24256F49148FE147F6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B572EB46C95F4338B530E81E /* ContentView.swift */; };
+		F7134C42CFB44412ACCBA663 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA86158772874CDD96D85045 /* ARViewContainer.swift */; };
+		414F880BCEE3414681D0B38B /* PlaneDetectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE56B655765B4C168C0ADA2E /* PlaneDetectionViewModel.swift */; };
+		7B9012C8B0754D369E5A459D /* PlaneEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C58BD13381F4032A75AD3D2 /* PlaneEntity.swift */; };
+		35E95F233A834CDFAF60908E /* PlaneOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC27BDD02F8947A18A5C4151 /* PlaneOverlay.swift */; };
+		2606CDD64B364D75B8316B8F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7D4FDB50984BA2A12A6611 /* SettingsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8B83862584DF4F638628E741 /* ARPlaneDetectionExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARPlaneDetectionExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2551CEC887724C988D795548 /* ARPlaneDetectionExplorerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARPlaneDetectionExplorer/ARPlaneDetectionExplorerApp.swift; sourceTree = "<group>"; };
+		B572EB46C95F4338B530E81E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARPlaneDetectionExplorer/ContentView.swift; sourceTree = "<group>"; };
+		BA86158772874CDD96D85045 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARPlaneDetectionExplorer/ARViewContainer.swift; sourceTree = "<group>"; };
+		AE56B655765B4C168C0ADA2E /* PlaneDetectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARPlaneDetectionExplorer/PlaneDetectionViewModel.swift; sourceTree = "<group>"; };
+		9C58BD13381F4032A75AD3D2 /* PlaneEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARPlaneDetectionExplorer/PlaneEntity.swift; sourceTree = "<group>"; };
+		FC27BDD02F8947A18A5C4151 /* PlaneOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARPlaneDetectionExplorer/PlaneOverlay.swift; sourceTree = "<group>"; };
+		1D7D4FDB50984BA2A12A6611 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARPlaneDetectionExplorer/SettingsView.swift; sourceTree = "<group>"; };
+		B8301787EA6448A18619542B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ARPlaneDetectionExplorer/Info.plist; sourceTree = "<group>"; };
+		9D92F1CAC130408DBD9E1DD5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B2325C43EBF84F6280160FBB /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E68E666FCE524AF7A560CBE6 = {isa = PBXGroup; children = (9D92F1CAC130408DBD9E1DD5 /* README.md */, 2551CEC887724C988D795548 /* ARPlaneDetectionExplorerApp.swift */, B572EB46C95F4338B530E81E /* ContentView.swift */, BA86158772874CDD96D85045 /* ARViewContainer.swift */, AE56B655765B4C168C0ADA2E /* PlaneDetectionViewModel.swift */, 9C58BD13381F4032A75AD3D2 /* PlaneEntity.swift */, FC27BDD02F8947A18A5C4151 /* PlaneOverlay.swift */, 1D7D4FDB50984BA2A12A6611 /* SettingsView.swift */, B8301787EA6448A18619542B /* Info.plist */, D8078A6830A3443CB9F660DD /* Products */); sourceTree = "<group>"; };
+		D8078A6830A3443CB9F660DD /* Products */ = {isa = PBXGroup; children = (8B83862584DF4F638628E741 /* ARPlaneDetectionExplorer.app */,); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FDEAD860532245A2B3649CB2 /* ARPlaneDetectionExplorer */ = {isa = PBXNativeTarget; buildConfigurationList = 132F695CB4084036892DCF0B /* Build configuration list for PBXNativeTarget "ARPlaneDetectionExplorer" */; buildPhases = (AEB9CE339D6D4399814B1E8D /* Sources */, B2325C43EBF84F6280160FBB /* Frameworks */, 19EF03CB6C1F4C5FA5A0B02C /* Resources */,); buildRules = ( ); dependencies = ( ); name = ARPlaneDetectionExplorer; productName = ARPlaneDetectionExplorer; productReference = 8B83862584DF4F638628E741 /* ARPlaneDetectionExplorer.app */; productType = "com.apple.product-type.application"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		99D142D1B47C485B8554DFAB /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 1500; LastUpgradeCheck = 1500; TargetAttributes = {FDEAD860532245A2B3649CB2 = {CreatedOnToolsVersion = 15.0; }; }; }; buildConfigurationList = B78E64979915423EA5EAE56C /* Build configuration list for PBXProject "ARPlaneDetectionExplorer" */; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base,); mainGroup = E68E666FCE524AF7A560CBE6; productRefGroup = D8078A6830A3443CB9F660DD /* Products */; projectDirPath = ""; projectRoot = ""; targets = (FDEAD860532245A2B3649CB2 /* ARPlaneDetectionExplorer */,); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		19EF03CB6C1F4C5FA5A0B02C /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AEB9CE339D6D4399814B1E8D /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (1132DCBDA1ED407B8FF6EB4D /* ARPlaneDetectionExplorerApp.swift in Sources */,7252AF24256F49148FE147F6 /* ContentView.swift in Sources */,F7134C42CFB44412ACCBA663 /* ARViewContainer.swift in Sources */,414F880BCEE3414681D0B38B /* PlaneDetectionViewModel.swift in Sources */,7B9012C8B0754D369E5A459D /* PlaneEntity.swift in Sources */,35E95F233A834CDFAF60908E /* PlaneOverlay.swift in Sources */,2606CDD64B364D75B8316B8F /* SettingsView.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0; }};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5BCB3CB5AF314AD689B0B1E3 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 5.0; }; name = Debug; };
+		2572461CCA974AC2BCD9C49C /* Release */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 5.0; }; name = Release; };
+		15EFB77B57D84E5BA64F0990 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = ARPlaneDetectionExplorer/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.example.ARPlaneDetectionExplorer; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = NO; SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;}; name = Debug; };
+		928FB1ED7F2140A29DB4CDB1 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = ARPlaneDetectionExplorer/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.example.ARPlaneDetectionExplorer; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = NO; SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1;}; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B78E64979915423EA5EAE56C = {isa = XCConfigurationList; buildConfigurations = (5BCB3CB5AF314AD689B0B1E3,2572461CCA974AC2BCD9C49C,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		132F695CB4084036892DCF0B = {isa = XCConfigurationList; buildConfigurations = (15EFB77B57D84E5BA64F0990,928FB1ED7F2140A29DB4CDB1,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = 99D142D1B47C485B8554DFAB /* Project object */;
+}
