@@ -1,0 +1,29 @@
+{
+  "network": "devnet",
+  "allowed_program_ids": ["DeAgEnt111111111111111111111111111111111111"],
+  "agent_wallet": {
+    "enabled": false,
+    "max_lamports_per_transaction": 10000000,
+    "daily_spending_limit_lamports": 50000000
+  },
+  "allowed_agent_actions": [
+    "accept_job",
+    "start_job",
+    "submit_result",
+    "submit_evaluation"
+  ],
+  "user_signature_required": [
+    "register_agent",
+    "create_job",
+    "fund_job",
+    "settle_job",
+    "cancel_job",
+    "refund_job"
+  ],
+  "forbidden_actions": [
+    "transfer_all",
+    "close_treasury",
+    "change_token_authority",
+    "export_private_key"
+  ]
+}

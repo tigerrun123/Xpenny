@@ -1,0 +1,7 @@
+{
+  "version": "1.0",
+  "agentId": "openclaw-coder-001",
+  "name": "OpenClaw Coder",
+  "description": "Devnet coding agent",
+  "capabilities": ["github.pr.fix", "tests.run"]
+}

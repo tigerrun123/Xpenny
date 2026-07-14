@@ -1,0 +1,3 @@
+# Security
+
+Threat model: malicious users, compromised chat context, replayed transactions, arbitrary program IDs, arbitrary token destinations, and accidental mainnet use. Protections: Devnet-only configuration, no seed phrases or raw private keys, allowlisted program IDs/actions, unsigned transaction flow for financial actions, PDA and token mint/owner validation, explicit status transitions, double settlement/refund prevention, secret redaction, environment-based RPC configuration, and rate-limit interfaces for plugin hosts. MVP limitations: unaudited code, placeholder generated IDL integration, no mainnet deployment, rejected jobs require explicit refund workflow.

@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "taskType": "github.pull_request.fix",
+  "title": "Fix failing tests in pull request",
+  "description": "Inspect the pull request, fix the failing tests, and submit evidence.",
+  "acceptanceCriteria": [
+    {
+      "id": "tests-pass",
+      "description": "All required automated tests pass",
+      "verificationMethod": "github_actions"
+    }
+  ],
+  "payment": { "mint": "DEVNET_TOKEN_MINT", "amountBaseUnits": "5000000" },
+  "deadline": 1780000000
+}
