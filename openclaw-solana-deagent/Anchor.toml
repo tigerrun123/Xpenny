@@ -1,0 +1,14 @@
+[features]
+seeds = false
+skip-lint = false
+[programs.devnet]
+deagent_protocol = "DeAgEnt111111111111111111111111111111111111"
+[programs.localnet]
+deagent_protocol = "DeAgEnt111111111111111111111111111111111111"
+[registry]
+url = "https://api.apr.dev"
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+[scripts]
+test = "pnpm --dir . exec tsx tests/anchor/deagent_protocol.test.ts"

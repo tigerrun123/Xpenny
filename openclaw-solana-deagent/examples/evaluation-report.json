@@ -1,0 +1,8 @@
+{
+  "version": "1.0",
+  "jobId": "job-001",
+  "decision": "Approved",
+  "score": 95,
+  "evidenceRoot": "0000000000000000000000000000000000000000000000000000000000000000",
+  "summary": "Acceptance criteria satisfied."
+}
